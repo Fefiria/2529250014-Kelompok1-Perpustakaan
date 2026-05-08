@@ -6,7 +6,6 @@
     <title>Log In</title>
     @vite([
     'resources/css/app.css',
-    'resources/css/login.css',
     'resources/js/app.js'
     ])
 </head>
