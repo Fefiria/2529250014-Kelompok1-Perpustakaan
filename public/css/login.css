@@ -13,6 +13,17 @@ body{
 /* LEFT PANEL */
 .left-panel{
     background: #a6845e;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+}
+
+.left-panel img{
+    width: 50%;
+    display: block;
 }
 
 /* RIGHT PANEL */

@@ -11,19 +11,21 @@
 
     {{-- Custom CSS --}}
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 </head>
 
 <body>
 
     <div class="container-fluid vh-100">
-        <div class="row h-100">
+        <div class="row h-100 g-0">
 
             {{-- LEFT PANEL --}}
-            <div class="col-lg-7 d-none d-lg-block left-panel"></div>
+            <div class="col-lg-7 d-none d-lg-flex left-panel p-0">
+                <img src="{{ asset('assets/logo-versi1-finalized.png') }}" alt="Logo">
+            </div>
 
             {{-- RIGHT PANEL --}}
-            <div class="col-12 col-lg-5 right-panel">
+            <div class="col-12 col-lg-5 right-panel p-0">
 
                 <div class="login-box">
 
