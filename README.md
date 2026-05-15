@@ -57,3 +57,54 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+# Aplikasi Perpustakaan
+
+## Kelompok 1:
+
+- Felicia Yeow
+- Fernando Brilian
+- M Wanhar
+- Achmad Hafista
+- Louis Vito
+
+## Fitur
+
+- Login & Register
+- Role Admin dan User
+- CRUD Buku
+- Pencarian Buku
+- Upload Cover Buku dengan Cloudinary
+- Detail Buku
+- Dashboard Admin
+- Manajemen User
+- Responsive Design
+
+## Teknologi yang Digunakan
+
+- PHP
+- Laravel
+- Laravel Breeze
+- MySQL
+- Bootstrap CSS
+- Cloudinary
+- Vite
+- Laragon
+
+## 👤 Login Default
+
+### Admin
+
+```txt
+Email    : admin@gmail.com
+Password : password
+```
+
+### User
+
+```txt
+Email    : user@gmail.com
+Password : password
+```

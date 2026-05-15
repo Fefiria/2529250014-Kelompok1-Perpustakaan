@@ -29,19 +29,12 @@
 
                 <div class="login-box">
 
-                    <h2 class="text-center mb-4">Log In</h2>
+                    <h2 class="text-center mb-4">Register</h2>
 
                     {{-- SESSION STATUS --}}
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{-- ERROR --}}
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            Email atau Password salah
                         </div>
                     @endif
 
