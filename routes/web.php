@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,9 +13,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/tambahbuku', function () {
-    return view('tambahbuku');
-})->middleware(['auth'])->name('tambahbuku');
+Route::resource('/buku', BukuController::class)->middleware(['auth']);
+Route::resource('/genre', GenreController::class)->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
