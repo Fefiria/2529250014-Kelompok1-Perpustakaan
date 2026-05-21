@@ -15,4 +15,7 @@ class Buku extends Model
         'jumlahHalaman',
         'photoUrl'
     ];
+
+    protected $table = 'bukus';
+    protected $primaryKey = 'idBuku';
 }

@@ -27,6 +27,11 @@
                                     Password dan konfirmasi password tidak sesuai
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
+                            @elseif(Str::contains($errors->first('password'), 'least'))
+                                <div class="alert alert-danger alert-dismissible show fade" role="alert">
+                                    Panjang password harus minimal 8 karakter
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
                             @endif
                         @endif
 
@@ -65,7 +70,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="btn-login">
+                        <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="btn-login" type="submit">
                             <span id="text-login">Daftar</span>
                             <div id="spinner-login" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></div>                   
                             <span id="text-loading" class="d-none">Loading...</span> 
