@@ -1,11 +1,12 @@
 <div id="sidebar">
     <div class="sidebar-wrapper active d-flex flex-column">
         <div class="sidebar-header position-relative px-2 pt-4 pb-0">
-            <div class="d-flex align-items-center justify-content-center w-100 position-relative">   
+            <div class="d-flex align-items-center justify-content-center w-100 position-relative">
                 <div class="d-flex align-items-center gap-3">
                     <div class="logo">
                         <a href="{{ route('dashboard') }}">
-                            <img src="{{ asset('assets/compiled/png/logo.png') }}" alt="Logo" style="width: 45px; height: 45px;">
+                            <img src="{{ asset('assets/compiled/png/logo.png') }}" alt="Logo"
+                                style="width: 45px; height: 45px;">
                         </a>
                     </div>
                     <div class="apptitle">
@@ -24,66 +25,72 @@
         <div class="sidebar-menu flex-grow-1">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                    <li class="sidebar-item active">
-                        <a href="{{ route('dashboard') }}" class='sidebar-link'>
-                            <i class="bi bi-grid-fill"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item has-sub">
-                        <a class='sidebar-link'>
-                            <i class="bi bi-journal-bookmark"></i>
-                            <span>Buku</span>
-                        </a>
-                        <ul class="submenu">
-                            <li class="submenu-item">
-                                <a href="{{ route('buku.create') }}" class="submenu-link">Tambah Buku</a>
-                            </li>
-                            <li class="submenu-item">
-                                <a href="component-alert.html" class="submenu-link">List Buku</a>    
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item has-sub">
-                        <a class='sidebar-link'>
-                            <i class="bi bi-box-seam"></i>
-                            <span>Genre</span>
-                        </a>
-                        <ul class="submenu">
-                            <li class="submenu-item">
-                                <a href="{{ route('genre.create') }}" class="submenu-link">Tambah Genre</a>
-                            </li>
-                            <li class="submenu-item">
-                                <a href="{{ route('genre.index') }}" class="submenu-link">List Genre</a>    
-                            </li>
-                        </ul>
-                    </li>
+                <li class="sidebar-item active">
+                    <a href="{{ route('dashboard') }}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item has-sub">
+                    <a class='sidebar-link'>
+                        <i class="bi bi-journal-bookmark"></i>
+                        <span>Buku</span>
+                    </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="{{ route('buku.create') }}" class="submenu-link">Tambah Buku</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="component-alert.html" class="submenu-link">List Buku</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item has-sub">
+                    <a class='sidebar-link'>
+                        <i class="bi bi-box-seam"></i>
+                        <span>Genre</span>
+                    </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="{{ route('genre.create') }}" class="submenu-link">Tambah Genre</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="{{ route('genre.index') }}" class="submenu-link">List Genre</a>
+                        </li>
+                    </ul>
+                </li>
                 </li>
             </ul>
         </div>
 
         <div class="sidebar-footer p-4 border-top mt-auto w-100">
             <div class="d-flex justify-content-between align-items-center w-100">
-                
+
                 <div class="dropdown">
-                    <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" id="topbarUserDropdown"
+                        class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         <div class="avatar avatar-md2 me-2">
                             <img src="{{ asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
                         </div>
                         <div class="text text-start">
-                            <h6 class="user-dropdown-name mb-0 text-dark-theme-white" style="font-size: 0.95rem; font-weight: 600;">
+                            <h6 class="user-dropdown-name mb-0 text-dark-theme-white"
+                                style="font-size: 0.95rem; font-weight: 600;">
                                 {{ Auth::user()->nama }}
                             </h6>
-                            <p class="user-dropdown-status text-muted mb-0" style="font-size: 0.75rem;">{{ ucfirst(Auth::user()->role) }}</p>
+                            <p class="user-dropdown-status text-muted mb-0" style="font-size: 0.75rem;">
+                                {{ ucfirst(Auth::user()->role) }}</p>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg" aria-labelledby="topbarUserDropdown">
                         <li><a class="dropdown-item" href="#">My Account</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item text-danger" href="{{ route('logout') }}" 
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Logout
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -95,11 +102,12 @@
 
                 <div class="theme-toggle d-flex gap-1 align-items-center ms-2">
                     <i class="bi bi-sun-fill text-warning position-relative" style="font-size: 13px; top: -1px;"></i>
-                    
+
                     <div class="form-check form-switch mb-0 pe-0">
-                        <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer; transform: scale(0.85);">
+                        <input class="form-check-input me-0" type="checkbox" id="toggle-dark"
+                            style="cursor: pointer; transform: scale(0.85);">
                     </div>
-                    
+
                     <i class="bi bi-moon-fill text-white position-relative" style="font-size: 12px; top: -1px;"></i>
                 </div>
 
