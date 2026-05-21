@@ -66,7 +66,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 - Felicia Yeow
 - Fernando Briliant
-- M Wanhar
+- M. Wanhar
 - Achmad Hafista
 - Louis Vito
 
