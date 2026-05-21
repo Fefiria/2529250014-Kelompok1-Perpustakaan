@@ -41,6 +41,7 @@
                                             <th style="width: 30%">NAMA GENRE</th>
                                             <th style="width: 50%">DESKRIPSI GENRE</th>
                                             <th style="width: 15%">AKSI</th>
+                                            Catatan Update Nanti: Jumlah Buku
                                         </tr>
                                     </thead>
                                     <tbody>
