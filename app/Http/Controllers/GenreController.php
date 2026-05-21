@@ -12,7 +12,7 @@ class GenreController extends Controller
      */
     public function index()
     {
-        $genres = Genre::latest()->paginate(10);
+        $genres = Genre::withCount('buku')->paginate(10);
         return view('genre.index', compact('genres'));
     }
 

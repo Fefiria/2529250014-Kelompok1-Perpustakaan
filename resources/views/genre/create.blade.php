@@ -27,23 +27,24 @@
                         <form class="form" method="POST" action="{{ route('genre.store') }}">
                             <div class="row gap-2">
                                 <div class="col-12">
-                                    @error('nama')
-                                        <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                            {{ $message }}
+                                    @if($errors->any())
+                                        <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
+                                            <ul>
+                                                @foreach($errors->all() as $error)
+                                                    <li>{{  $error }}</li>
+                                                @endforeach 
+                                            </ul> 
                                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
-                                    @enderror
+                                    @endif
                                     <div class="form-group has-icon-left">
                                         <label for="nama-genre">Nama Genre</label>
                                         <div class="position-relative">
                                             <input type="text" id="nama-genre" class="form-control mt-1" placeholder="Masukkan nama genre..." valie="{{ old('nama') }}" name="nama">
                                             <div class="form-control-icon">
-                                                <i class="bi bi-journal-bookmark"></i>
+                                                <i class="bi bi-pencil-square"></i>
                                             </div>
                                         </div>
-                                        @error('nama')
-                                            <p class="text text-danger">{{ $message }}</p>
-                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -52,13 +53,13 @@
                                         <div class="position-relative">
                                             <input type="text" id="deskripsi-genre" class="form-control mt-1" placeholder="Masukkan deskripsi genre..." value="{{ old('deskripsi') }}" name="deskripsi">
                                             <div class="form-control-icon">
-                                                <i class="bi bi-person-lines-fill"></i>
+                                                <i class="bi bi-card-heading"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <div class="col-12 d-flex justify-content-end gap-2">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Tambah Genre</button>
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                 </div>
                             </div>

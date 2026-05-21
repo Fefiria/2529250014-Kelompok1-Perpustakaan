@@ -20,19 +20,16 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/extensions/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/sweetalert2/sweetalert2.all.js') }}"></script>
+    <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
+    <script src="{{ asset('assets/extensions/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
     <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/date-picker.js') }}"></script>
-    <script src="{{ asset('assets/compiled/js/displayPreviewImage.js') }}"></script>
-    <script src="{{ asset('assets/extensions/sweetalert2/sweetalert2.all.js') }}"></script>
-    <script src="{{ asset('assets/compiled/js/displaySweetalert.js') }}"></script>
-    <script src="{{ asset('assets/compiled/js/displayAlert.js') }}"></script>
 
     @if(session('success'))
         <script>
