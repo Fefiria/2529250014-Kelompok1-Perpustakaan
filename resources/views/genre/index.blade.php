@@ -8,9 +8,11 @@
                 <h3>List Genre</h3>
                 <p class="text-subtitle text-muted">Gunakan halaman ini untuk melihat daftar genre.</p>
             </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
+            
+            <div class="col-12 col-md-6 order-md-2 order-first d-flex flex-column align-items-start align-items-md-end justify-content-between">
+                
+                <nav aria-label="breadcrumb" class="breadcrumb-header mb-3 mb-md-0">
+                    <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List Genre</li>
                     </ol>
@@ -26,7 +28,10 @@
                     <div class="card-body">
                         @if($genres->isEmpty())
                             <p>Belum ada genre yang ditambahkan</p>
-                            <a href="{{ route('genre.create')}}" class="alert alert-success">Tambah Genre Baru</a>
+                            <a href="{{ route('genre.create') }}" class="btn btn-primary align-items-center gap-2">
+                                <i class="bi bi-plus-circle-fill"></i>
+                                <span>Tambah Genre</span>
+                            </a>
                         @else
                             <div class="table-responsive">
                                 <table class="table table-lg">
@@ -41,7 +46,7 @@
                                     <tbody>
                                         @foreach($genres as $index => $genre)
                                         <tr>
-                                            <td class="text-bold-500">{{ $index + 1 }}</td>
+                                            <td class="text-bold-500">{{ $genres->firstItem() + $index}}</td>
                                             <td class="text-bold-500">{{ $genre->nama }}</td>
                                             <td class="text-bold-200">{{ $genre->deskripsi }}</td>
                                             <td class="d-flex align-items-center gap-2">
@@ -58,6 +63,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                {{ $genres->links('pagination::bootstrap-5') }}
                             </div>
                         @endif
                     </div>

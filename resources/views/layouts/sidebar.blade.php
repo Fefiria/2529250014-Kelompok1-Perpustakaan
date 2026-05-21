@@ -9,7 +9,7 @@
                         </a>
                     </div>
                     <div class="apptitle">
-                        <p class="text-white fs-5 mb-0 fw-bold text-nowrap">Bookworm Library</p>
+                        <p class="text-dark-theme-white fs-5 mb-0 fw-bold text-nowrap">Bookworm Library</p>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
                             <img src="{{ asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
                         </div>
                         <div class="text text-start">
-                            <h6 class="user-dropdown-name mb-0 text-white" style="font-size: 0.95rem; font-weight: 600;">
+                            <h6 class="user-dropdown-name mb-0 text-dark-theme-white" style="font-size: 0.95rem; font-weight: 600;">
                                 {{ Auth::user()->nama }}
                             </h6>
                             <p class="user-dropdown-status text-muted mb-0" style="font-size: 0.75rem;">{{ ucfirst(Auth::user()->role) }}</p>
