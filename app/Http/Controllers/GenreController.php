@@ -33,9 +33,9 @@ class GenreController extends Controller
             'nama' => 'required|unique:genres',
             'deskripsi' => 'required'
         ], [
-            'nama.required' => 'Nama genre harus di isi!',
-            'deskripsi.required' => 'Deskripsi genre harus di isi!',
-            'nama.unique' => 'Nama genre ini sudah ada, gunakan nama lain!'
+            'nama.required' => 'Nama genre harus di isi',
+            'deskripsi.required' => 'Deskripsi genre harus di isi',
+            'nama.unique' => 'Nama genre ini sudah ada, gunakan nama lain'
         ]);
 
         $genre = Genre::create($input);
@@ -56,15 +56,28 @@ class GenreController extends Controller
      */
     public function edit(Genre $genre)
     {
-        //
+        return view('genre.edit', compact('genre'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Genre $genre)
+    public function update(Request $request, $idGenre)
     {
-        //
+        $input = $request->validate([
+            'nama' => 'required|unique:genres,nama,' . $idGenre . ',idGenre',
+            'deskripsi' => 'required',
+        ], [
+            'nama.unique' => 'Nama genre ini sudah ada, gunakan nama lain!',
+            'nama.required' => 'Nama genre harus di isi!',
+            'deskripsi.required' => 'Deskripsi genre harus di isi!',
+        ]);
+
+        $genre = Genre::find($idGenre);
+
+        $genre->update($input);
+
+        return redirect()->route('genre.index')->with('success', 'Berhasil update genre dengan nama ' . $genre->nama . '');
     }
 
     /**

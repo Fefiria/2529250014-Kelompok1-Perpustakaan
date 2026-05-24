@@ -41,7 +41,7 @@
                             <a href="{{ route('buku.create') }}" class="submenu-link">Tambah Buku</a>
                         </li>
                         <li class="submenu-item">
-                            <a href="component-alert.html" class="submenu-link">List Buku</a>
+                            <a href="{{ route('buku.index') }}" class="submenu-link">List Buku</a>
                         </li>
                     </ul>
                 </li>

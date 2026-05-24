@@ -1,5 +1,17 @@
 @extends('layouts.main')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/extensions/filepond/filepond.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.min.css') }}">
+    <style>
+        .hoverAnimation:hover{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="page-heading">
     <div class="page-title">
@@ -24,13 +36,13 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
-                        <form class="form" method="POST" action="{{ route('buku.store') }}">
+                        <form class="form" method="POST" action="{{ route('buku.store') }}" enctype="multipart/form-data">
                             <div class="row gap-2">
                                 <div class="col-12">
                                     <div class="form-group has-icon-left">
                                         <label for="judul-buku-column">Judul Buku</label>
                                         <div class="position-relative">
-                                            <input type="text" id="judul-buku-column" class="form-control mt-1" placeholder="Masukkan judul buku..." name="judul-buku-column">
+                                            <input type="text" id="judul-buku-column" class="form-control mt-1" placeholder="Masukkan judul buku..." name="judul">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-journal-bookmark"></i>
                                             </div>
@@ -41,7 +53,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="pengarang-column">Pengarang</label>
                                         <div class="position-relative">
-                                            <input type="text" id="pengarang-column" class="form-control mt-1" placeholder="Masukkan pengarang buku..." name="pengarang-column">
+                                            <input type="text" id="pengarang-column" class="form-control mt-1" placeholder="Masukkan pengarang buku..." name="pengarang">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-person-lines-fill"></i>
                                             </div>
@@ -52,7 +64,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="penerbit-column">Penerbit</label>
                                         <div class="position-relative">
-                                            <input type="text" id="penerbit-column" class="form-control mt-1" placeholder="Masukkan penerbit buku..." name="penerbit-column">
+                                            <input type="text" id="penerbit-column" class="form-control mt-1" placeholder="Masukkan penerbit buku..." name="penerbit">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-globe-americas"></i>
                                             </div>
@@ -63,7 +75,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="tanggal-terbit-column">Tanggal Terbit</label>
                                         <div class="position-relative">
-                                            <input type="date" id="tanggal-terbit-column" class="form-control mb-3 flatpickr-only-date mt-1" placeholder="Masukkan tanggal terbit buku..." name="penerbit-column">
+                                            <input type="text" id="tanggal-terbit-column" class="form-control mb-3 flatpickr-no-config flatpickr-input mt-1" placeholder="Masukkan tanggal terbit buku..." name="tanggalTerbit" readonly="readonly">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-calendar"></i>
                                             </div>
@@ -74,36 +86,48 @@
                                     <div class="form-group has-icon-left">
                                         <label for="jumlah-halaman-column">Jumlah Halaman</label>
                                         <div class="position-relative">
-                                            <input type="text" id="jumlah-halaman-column" class="form-control mt-1" placeholder="Masukkan jumlah halaman buku..." name="jumlah-halaman-column">
+                                            <input type="number" id="jumlah-halaman-column" class="form-control mt-1" placeholder="Masukkan jumlah halaman buku..." name="jumlahHalaman">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-123"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="form-group mb-3">
-                                        <label for="foto-buku" class="form-label">Foto Buku</label>
-                                        <input type="file" class="form-control" id="foto-buku" name="foto_buku" accept="image/*" onchange="previewImage()">
-                                        <small class="text-muted">Format yang didukung: JPG, JPEG, PNG. Maksimal 2MB.</small>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label d-block">Preview Photo Buku</label>
-                                        <div class="border rounded p-2 d-flex align-items-center justify-content-center" 
-                                            style="max-width: 200px; min-height: 250px; background-color: #f8f9fa;">
-                                            
-                                            <img id="img-preview" src="https://via.placeholder.com/150x200?text=No+Image" 
-                                                class="img-fluid rounded shadow-sm" 
-                                                style="max-height: 230px; width: 100%; object-fit: cover;" 
-                                                alt="Preview Foto">
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <label for="status-column" class="form-label">Status</label>                                                                                        
+                                        <div class="position-relative">
+                                            <select id="status-column" class="form-control mt-1" name="status">
+                                                <option value="tersedia" {{ old('status') == 'tersedia' ? 'selceted' : ''}}>Tersedia</option>
+                                                <option value="tidaktersedia" {{ old('status') == 'tidak tersedia' ? 'selceted' : ''}}>Tidak Tersedia</option>
+                                            </select>
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-cart2"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="genre-column" class="form-label">Genre</label>                                                                                        
+                                        <div class="position-relative">
+                                            <select id="genre-column" class="choices form-control form-select mt-1" name="idGenre[]" multiple="multiple" data-placeholder="Pilih genre...">
+                                                @foreach($genre as $dataGenre)
+                                                    <option value="{{ $dataGenre->idGenre }}" {{ old('idGenre') == $dataGenre->idGenre ? 'selected' : '' }}>{{ $dataGenre->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-3">
+                                        <label for="foto-buku" class="form-label">Foto Buku</label>
+                                        <input type="file" class="image-preview-filepond mb-0" name="photoUrl" accept="image/*" data-max-file-size="2MB">
+                                        <small class="text-muted">Format yang didukung: JPG, JPEG, PNG. Maksimal 2MB.</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex justify-content-end gap-2">
+                                    <button type="submit" class="btn btn-primary me-1 mb-1">Tambah Buku</button>
                                     <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                 </div>
                             </div>
@@ -114,16 +138,31 @@
         </div>
     </div>
 </div>
-
-<footer>
-    <div class="footer clearfix mb-0 text-muted">
-        <div class="float-start">
-            <p>2023 &copy; Mazer</p>
-        </div>
-        <div class="float-end">
-            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
-                by <a href="https://saugi.me">Saugi</a></p>
-        </div>
-    </div>
-</footer>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/extensions/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-image-filter/filepond-plugin-image-filter.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/filepond/filepond.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/filepond.js') }}"></script>
+    <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+    <script>
+        let choicesInput = document.querySelectorAll('.choices');
+        let initChoices;
+        for (let i = 0; i < choicesInput.length; i++) {
+            initChoices = new Choices(choicesInput[i], {
+                delimiter: ',',
+                editItems: true,
+                maxItemCount: -1, // -1 artinya tidak terbatas, bisa pilih sebanyak mungkin
+                removeItemButton: true, // Memunculkan tombol 'x' untuk hapus genre pilihan
+                allowHTML: true,
+                searchFields: ['label', 'value']
+            });
+        }
+    </script>
+@endpush

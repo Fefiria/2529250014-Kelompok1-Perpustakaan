@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
-            $table->id('idGenre');
-            $table->string('nama')->unique();
-            $table->string('deskripsi');
+        Schema::create('genre_bukus', function (Blueprint $table) {
+            $table->id('idGenreBuku');
+            $table->integer('idGenre')->constrained('genres', 'idGenre')->onDelete('cascade');
+            $table->integer('idBuku')->constrained('bukus', 'idBuku')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('genre_bukus');
     }
 };

@@ -52,9 +52,10 @@
                                             <td class="text-bold-200">{{ $genre->deskripsi }}</td>
                                             <td class="text-bold-200">{{ $genre->buku_count }}</td>
                                             <td class="d-flex align-items-center gap-2">
-                                                <a class="btn btn-sm border text-primary" href="editgenre.html" data-bs-toggle="tooltip" title="Edit Genre">
+                                                <a href="{{ route('genre.edit', $genre->idGenre )}}" class="btn btn-sm border text-primary" data-bs-toggle="tooltip"title="Edit Genre">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
+                                                </span>
                                                 <form method="POST" action="{{ route('genre.destroy', $genre->idGenre) }}" onsubmit="displayAlert(event, this, '{{ $genre->nama }}', 'warning')">
                                                     @csrf
                                                     <input name="_method" type="hidden" value="DELETE">
@@ -76,16 +77,4 @@
         </div>
     </div>
 </div>
-
-<footer>
-    <div class="footer clearfix mb-0 text-muted">
-        <div class="float-start">
-            <p>2023 &copy; Mazer</p>
-        </div>
-        <div class="float-end">
-            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
-                by <a href="https://saugi.me">Saugi</a></p>
-        </div>
-    </div>
-</footer>
 @endsection

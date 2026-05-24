@@ -53,7 +53,7 @@ function displayMessageAnimation(type, title, message){
         title: title,
         text: message,
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         background: document.body.classList.contains('theme-dark') ? '#1e1e2d' : '#fff',
         color: document.body.classList.contains('theme-dark') ? '#fff' : '#000'
     });
