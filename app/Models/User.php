@@ -20,11 +20,13 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $primaryKey = 'idUser';
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = [
+        'nama',
+        'username',
+        'email',
+        'password',
+    ];
+
     protected function casts(): array
     {
         return [
