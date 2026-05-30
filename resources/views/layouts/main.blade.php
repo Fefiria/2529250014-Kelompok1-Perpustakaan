@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,10 @@
     <link rel="stylesheet" href="{{ asset('assets/extensions/flatpickr/flatpickr.min.css') }}">
     @stack('styles')
 </head>
+
 <body>
     <div id="app">
-        
+
         @include('layouts.sidebar')
 
         <div id="main">
@@ -30,13 +32,14 @@
     <script src="{{ asset('assets/static/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/date-picker.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @stack('scripts')
 
-    @if(session('success'))
+    @if (session('success'))
         <script>
-            displayMessageAnimation('success','Sukses', @json(session('success')));
+            displayMessageAnimation('success', 'Sukses', @json(session('success')));
         </script>
     @endif
 </body>
+
 </html>
