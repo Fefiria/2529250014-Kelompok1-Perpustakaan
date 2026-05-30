@@ -26,17 +26,17 @@
                     <div class="card-body">
                         <form class="form" method="POST" action="{{ route('genre.store') }}">
                             <div class="row gap-2">
+                                @if($errors->any())
+                                    <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
+                                        <ul>
+                                            @foreach($errors->all() as $error)
+                                                <li>{{  $error }}</li>
+                                            @endforeach 
+                                        </ul> 
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
                                 <div class="col-12">
-                                    @if($errors->any())
-                                        <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
-                                            <ul>
-                                                @foreach($errors->all() as $error)
-                                                    <li>{{  $error }}</li>
-                                                @endforeach 
-                                            </ul> 
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        </div>
-                                    @endif
                                     <div class="form-group has-icon-left">
                                         <label for="nama-genre">Nama Genre</label>
                                         <div class="position-relative">

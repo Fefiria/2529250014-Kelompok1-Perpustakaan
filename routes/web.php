@@ -13,6 +13,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/buku/proxy-cover', [BukuController::class, 'proxyCover'])->name('buku.proxy-cover');
 Route::resource('/buku', BukuController::class)->middleware(['auth']);
 Route::resource('/genre', GenreController::class)->middleware(['auth']);
 

@@ -50,11 +50,8 @@
                                         <tr>
                                             <td class="text-bold-500">{{ $bukus->firstItem() + $index}}</td>
                                             <td>
-                                                @if($buku->photoUrl && file_exists(public_path('uploads/buku/' . $buku->photoUrl)))
-                                                    <img src="{{ asset('uploads/buku/' . $buku->photoUrl) }}" 
-                                                        alt="Cover {{ $buku->judul }}" 
-                                                        class="rounded shadow-sm" 
-                                                        style="width: 60px; height: 80px; object-fit: cover; object-position: center;">
+                                                @if($buku->photoUrl)
+                                                    <img src="{{ $buku->photoUrl }}" alt="Cover {{ $buku->judul }}" class="rounded shadow-sm" style="width: 60px; height: 80px; object-fit: cover; object-position: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $buku->judul }}">
                                                 @else
                                                     <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60" 
                                                         alt="Default Cover" 
@@ -84,11 +81,11 @@
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
                                                     
-                                                    <a href="j.html" class="btn btn-sm border text-primary" data-bs-toggle="tooltip" title="Edit Buku">
+                                                    <a href="{{ route('buku.edit', $buku->idBuku) }}" class="btn btn-sm border text-primary" data-bs-toggle="tooltip" title="Edit Buku">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
 
-                                                    <form method="POST" action="" class="m-0" onsubmit="displayAlert(event, this, '{{ $buku->judul }}', 'warning')">
+                                                    <form method="POST" action="{{ route('buku.destroy', $buku->idBuku) }}" class="m-0" onsubmit="displayAlert(event, this, '{{ $buku->judul }}', 'warning')">
                                                         @csrf
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button class="btn btn-sm border text-danger" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Buku">

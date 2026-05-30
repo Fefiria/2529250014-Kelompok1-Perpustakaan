@@ -6,8 +6,35 @@ use App\Models\Buku;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+
+use Illuminate\Support\Facades\Http;
+
 class BukuController extends Controller
-{
+{    
+
+    public function proxyCover(Request $request)
+    {
+        // Mendapatkan URl dari Cover Buku (Jika ada)
+        $url = $request->query('url');
+        
+        if (!$url) {
+            return response('URL tidak ditemukan', 404);
+        }
+
+        // Ambil gambar dari Cloudinary secara aman lewat backend
+        $response = Http::get($url);
+
+        if ($response->failed()) {
+            return response('Gagal mengambil gambar', 500);
+        }
+
+        // Kembalikan sebagai file gambar asli ke FilePond
+        return response($response->body(), 200)->header('Content-Type', $response->header('Content-Type'));
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -61,16 +88,22 @@ class BukuController extends Controller
             'status' => $input['status']
         ]);
 
-        // Cek apakah user menambahkan photo buku? jika maka taruh di folder public/uploads/buku
+        // Cek apakah user menambahkan photo buku? jika ditambahkan maka upload via cloudinary
         if($request->hasFile('photoUrl')){
-            $file = $request->file('photoUrl');
-            $fileExtension = $file->getClientOriginalExtension();
+            // Memanggil Cloudinary
+            Configuration::instance();
 
-            $newFileName = $buku->idBuku . '.' . $fileExtension;
-            $file->move(public_path('uploads/buku'), $newFileName);
+            // Mengupload file ke cloudinary
+            $update = (new UploadApi())->upload($request->file('photoUrl')->getRealPath(), [
+                'folder' => 'buku'
+            ]);
 
+            // Ambil URL Gambar dari Cloudinary
+            $photoUrl = $update['secure_url'];
+
+            // Menyimpan URL Gambar dari Cloudinary ke Database
             $buku->update([
-                'photoUrl' => $newFileName
+                'photoUrl' => $photoUrl
             ]);
         }
 
@@ -93,25 +126,93 @@ class BukuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Buku $buku)
+    public function edit($idBuku)
     {
-        //
+        $buku = Buku::find($idBuku);
+        $genre = Genre::all();
+        return view('buku.edit', compact('buku','genre'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request, $idBuku)
     {
-        //
+        // Cek apakah id buku yang di update ada di database?
+        $buku = Buku::findOrFail($idBuku);
+
+        // Validasi input dari user
+        $input = $request->validate([
+            'judul' => 'required',
+            'pengarang' => 'required',
+            'penerbit' => 'required',
+            'tanggalTerbit' => 'required',
+            'jumlahHalaman' => 'required',
+            'idGenre' => 'required|array',
+            'idGenre.*' => 'integer|exists:genres,idGenre',
+            'status'=> 'required'
+        ], [
+            'judul.required' => 'Judul buku harus di isi',
+            'pengarang.required' => 'Pengarang buku harus di isi',
+            'penerbit.required' => 'Penerbit buku harus di isi',
+            'tanggalTerbit.required' => 'Tanggal terbit buku harus di isi',
+            'jumlahHalaman.required' => 'Jumlah halaman buku harus di isi',
+            'idGenre.required' => 'Pilih minimal 1 genre untuk buku ini',   
+            'status.required' => 'Status buku harus di isi'
+        ]);
+
+        // Mengsortir data input ke database
+        $dataUpdate = [
+            'judul' => $input['judul'],
+            'pengarang' => $input['pengarang'],
+            'penerbit' => $input['penerbit'],
+            'tanggalTerbit' => $input['tanggalTerbit'],
+            'jumlahHalaman' => $input['jumlahHalaman'],
+            'status' => $input['status'],
+            'photoUrl' => null
+        ];
+
+        // Cek apakah user menambahkan photo buku? jika ditambahkan maka upload via cloudinary
+        if($request->hasFile('photoUrl')){
+            // Memanggil Cloudinary
+            Configuration::instance();
+
+            // Mengupload file ke cloudinary
+            $update = (new UploadApi())->upload($request->file('photoUrl')->getRealPath(), [
+                'folder' => 'buku'
+            ]);
+
+            // Ambil URL Gambar dari Cloudinary
+            $dataUpdate['photoUrl'] = $update['secure_url'];
+        } else {
+            // Jika cover buku di hapus dan tidak menambahkan cover baru
+            if($buku->photoUrl && !$request->has('photoUrl')){
+                $dataUpdate['photoUrl'] = null;
+            }
+        }
+
+        // Mengupdate data buku
+        $buku->update($dataUpdate);
+
+        // Mengsinkron id genre ke dalam tabel relasi antara buku dan genre
+        $buku->genre()->sync($request->idGenre);
+
+        // Kembalikan user ke index dan beritahu bahwa buku yang ditambahkan telah berhasil
+        return redirect()->route('buku.index')->with('success', 'Berhasil mengupdate buku dengan nama ' . $buku->judul);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Buku $buku)
+    public function destroy($idBuku)
     {
-        //
+        $buku = Buku::find($idBuku);
+
+        $namaBuku = $buku->judul;
+
+        $buku->delete();
+
+        return redirect()->route('buku.index')->with('success','Berhasil menghapus buku ' . $namaBuku);
     }
 
 }
