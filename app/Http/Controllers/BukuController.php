@@ -128,9 +128,13 @@ class BukuController extends Controller
      */
     public function edit($idBuku)
     {
-        $buku = Buku::find($idBuku);
-        $genre = Genre::all();
-        return view('buku.edit', compact('buku','genre'));
+        try {
+            $buku = Buku::findOrFail($idBuku);
+            $genre = Genre::all();
+            return view('buku.edit', compact('buku', 'genre'));
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        }
     }
 
     /**
