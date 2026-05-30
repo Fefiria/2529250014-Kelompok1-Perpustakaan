@@ -33,6 +33,37 @@
     <script src="{{ asset('assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/date-picker.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('dashboardChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Buku', 'Anggota'],
+                datasets: [{
+                    label: 'Jumlah Data',
+                    data: [
+                        {{ $jumlahBuku }},
+                        {{ $jumlahAnggota }}
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
     @stack('scripts')
 
     @if (session('success'))

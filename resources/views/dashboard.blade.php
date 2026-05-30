@@ -7,59 +7,95 @@
 
     <div class="page-content">
         <div class="row">
-            <div class="col-12 col-lg-9">
-                <div class="row">
+            <div class="row">
 
-                    {{-- Jumlah Buku --}}
-                    <div class="col-6 col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon purple">
-                                            <i class="iconly-boldShow"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted mb-0">Jumlah Buku</h6>
-                                        <h6 class="font-extrabold mb-0">{{ $jumlahBuku }}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {{-- Jumlah Buku --}}
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
 
-                    {{-- Jumlah Anggota --}}
-                    <div class="col-6 col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue">
-                                            <i class="iconly-boldProfile"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted mb-0">Jumlah Anggota</h6>
-                                        <h6 class="font-extrabold mb-0">{{ $jumlahAnggota }}</h6>
-                                    </div>
+                                <div class="stats-icon purple me-3">
+                                    <i class="iconly-boldShow"></i>
                                 </div>
+
+                                <div>
+                                    <h6 class="text-muted mb-1">Jumlah Buku</h6>
+                                    <h6 class="font-extrabold mb-0">{{ $jumlahBuku }}</h6>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Grafik --}}
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h4>Statistik Perpustakaan</h4>
-                    </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
 
-                    <div class="card-body">
-                        <canvas id="dashboardChart"></canvas>
+                                <div class="stats-icon blue me-3">
+                                    <i class="iconly-boldProfile"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-muted mb-1">Jumlah Anggota</h6>
+                                    <h6 class="font-extrabold mb-0">{{ $jumlahAnggota }}</h6>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="stats-icon blue me-3">
+                                    <i class="iconly-boldProfile"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-muted mb-1">Jumlah Peminjaman</h6>
+                                    <h6 class="font-extrabold mb-0">000</h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="stats-icon blue me-3">
+                                    <i class="iconly-boldProfile"></i>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-muted mb-1">Jumlah Dikembalikan</h6>
+                                    <h6 class="font-extrabold mb-0">000</h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Grafik --}}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Statistik Perpustakaan</h4>
+                </div>
+
+                <div class="card-body">
+                    <canvas id="dashboardChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
