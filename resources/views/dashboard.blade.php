@@ -100,3 +100,37 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        const ctx = document.getElementById('dashboardChart');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Buku', 'Anggota'],
+                    datasets: [{
+                        label: 'Jumlah Data',
+                        data: [
+                            {{ $jumlahBuku }},
+                            {{ $jumlahAnggota }}
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    </script>
+@endpush
