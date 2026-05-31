@@ -193,27 +193,22 @@ class BukuController extends Controller
             'tanggalTerbit' => $input['tanggalTerbit'],
             'jumlahHalaman' => $input['jumlahHalaman'],
             'status' => $input['status'],
-            'stok' => $input['stok'],
-            'photoUrl' => null
+            'stok' => $input['stok']
         ];
 
-        // Cek apakah user menambahkan photo buku? jika ditambahkan maka upload via cloudinary
-        if($request->hasFile('photoUrl')){
-            // Memanggil Cloudinary
+        // 1. Jika user upload foto cover buku baru
+        if ($request->hasFile('photoUrl')) {
             Configuration::instance();
-
-            // Mengupload file ke cloudinary
             $update = (new UploadApi())->upload($request->file('photoUrl')->getRealPath(), [
                 'folder' => 'buku'
             ]);
-
-            // Ambil URL Gambar dari Cloudinary
             $dataUpdate['photoUrl'] = $update['secure_url'];
-        } else {
-            // Jika cover buku di hapus dan tidak menambahkan cover baru
-            if($buku->photoUrl && !$request->has('photoUrl')){
-                $dataUpdate['photoUrl'] = null;
-            }
+        // 2. Jika user hanya update data buku selain cover buku
+        } else if ($request->has('photoUrl') && !empty($request->input('photoUrl'))) {
+            $dataUpdate['photoUrl'] = $request->input('photoUrl');
+        // 3. Jika user menghapus cover buku dan tidak menambahkan cover baru
+        } else { //
+            $dataUpdate['photoUrl'] = null;
         }
 
         // Mengupdate data buku

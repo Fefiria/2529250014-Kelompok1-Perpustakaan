@@ -93,11 +93,22 @@
                                         <label for="status-column" class="form-label">Status</label>                                                                                        
                                         <div class="position-relative">
                                             <select id="status-column" class="form-control mt-1" name="status">
-                                                <option value="tersedia" {{ (old('status') ?? $buku->status) == 'tersedia' ? 'selceted' : ''}}>Tersedia</option>
-                                                <option value="tidaktersedia" {{ (old('status') ?? $buku->status) == 'tidak tersedia' ? 'selceted' : ''}}>Tidak Tersedia</option>
+                                                <option value="tersedia" {{ (old('status') ?? $buku->status) == 'tersedia' ? 'selected' : ''}}>Tersedia</option>
+                                                <option value="tidaktersedia" {{ (old('status') ?? $buku->status) == 'tidak tersedia' ? 'selected' : ''}}>Tidak Tersedia</option>
                                             </select>
                                             <div class="form-control-icon">
                                                 <i class="bi bi-cart2"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <label for="stok-column">Stok</label>
+                                        <div class="position-relative">
+                                            <input type="number" id="stok-column" class="form-control mt-1" name="stok" value="{{ old('stok') ?? $buku->stok }}">
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-collection"></i>
                                             </div>
                                         </div>
                                     </div>
