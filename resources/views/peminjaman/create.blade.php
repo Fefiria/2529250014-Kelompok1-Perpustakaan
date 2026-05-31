@@ -47,66 +47,74 @@
                             </div>
                         @endif
                         <form action="{{ route('peminjaman.store') }}" method="POST">
-    @csrf
-    <div class="row">
-        
-        <div class="col-lg-5 col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">1. Informasi Peminjam</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Nama Anggota / Peminjam</label>
-                        <select class="choices form-select" name="idUser">
-                            <option value="">Cari Nama Anggota...</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->nama }} - ({{ $user->username }})</option>
-                            @endforeach
-                        </select>
-                    </div>
+                            @csrf
+                            <div class="row">
+                                
+                                <div class="col-lg-5 col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">1. Informasi Peminjam</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Nama Anggota / Peminjam</label>
+                                                <select class="choices form-select" name="idUser">
+                                                    <option value="">Cari Nama Anggota...</option>
+                                                    @foreach($users as $user)
+                                                        <option value="{{ $user->idUser }}">{{ $user->nama }} - ({{ $user->username }})</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                    <div class="form-group mb-3">
-                        <label class="form-label">Tanggal Pinjam</label>
-                        <input type="text" class="form-control flatpickr-no-config" name="tanggalPinjam" placeholder="Pilih Tanggal..">
-                    </div>
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Tanggal Pinjam</label>
+                                                <input type="text" class="form-control flatpickr-no-config" name="tanggalPinjam" placeholder="Pilih Tanggal..">
+                                            </div>
 
-                    <div class="form-group mb-3">
-                        <label class="form-label">Tanggal Harus Kembali</label>
-                        <input type="text" class="form-control flatpickr-no-config" name="tanggalKembali" placeholder="Pilih Tanggal..">
-                    </div>
-                </div>
-            </div>
-        </div>
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Lama Pinjam (Hari)</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" name="lamaPinjam" min="1" placeholder="Contoh: 7" required>
+                                                    <span class="input-group-text">Hari</span>
+                                                </div>
+                                            </div>
 
-        <div class="col-lg-7 col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">2. Buku yang Dipinjam</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group mb-4">
-                        <label class="form-label">Pilih Buku</label>
-                        <select class="choices form-select" name="idBuku[]" multiple="multiple" data-placeholder="Kamu bisa memilih beberapa buku sekaligus...">
-                            @foreach($buku as $dataBuku)
-                                <option value="{{ $dataBuku->idBuku }}">{{ $dataBuku->judul }} (Tersedia: {{ $dataBuku->stok }})</option>
-                            @endforeach
-                        </select>
-                        <small class="text-muted mt-1 d-block">Petunjuk: Klik atau ketik untuk menambah lebih dari 1 buku.</small>
-                    </div>
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">Catatan / Keterangan <small class="text-muted">(Opsional)</small></label>
+                                                <textarea class="form-control" name="keterangan" rows="3" placeholder="Tulis catatan tambahan jika ada..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <hr>
+                                <div class="col-lg-7 col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">2. Buku yang Dipinjam</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group mb-4">
+                                                <label class="form-label">Pilih Buku</label>
+                                                <select class="choices form-select" name="idBuku[]" multiple="multiple" data-placeholder="Kamu bisa memilih beberapa buku sekaligus...">
+                                                    @foreach($buku as $dataBuku)
+                                                        <option value="{{ $dataBuku->idBuku }}">{{ $dataBuku->judul }} (Tersedia: {{ $dataBuku->stok }})</option>
+                                                    @endforeach
+                                                </select>
+                                                <small class="text-muted mt-1 d-block">Petunjuk: Klik atau ketik untuk menambah lebih dari 1 buku.</small>
+                                            </div>
 
-                    <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="{{ route('peminjaman.index') }}" class="btn btn-light-secondary">Batal</a>
-                        <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Proses Peminjaman</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                            <hr>
 
-    </div>
-</form>
+                                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                                <button type="submit" class="btn btn-success">Tambah Peminjaman</button>
+                                                <a href="{{ route('peminjaman.index') }}" class="btn btn-light-secondary">Batal</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

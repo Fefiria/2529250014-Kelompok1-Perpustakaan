@@ -30,7 +30,7 @@ class Peminjaman extends Model
     public function details() {
         // Parameter 1: Foreign Key di tabel detail_peminjamans
         // Parameter 2: Primary Key di tabel peminjamans
-        return $this->belongsTo(DetailPeminjaman::class, 'idPeminjaman', 'idPeminjaman');
+        return $this->hasMany(DetailPeminjaman::class, 'idPeminjaman', 'idPeminjaman');
     }
 
     public function denda() {
