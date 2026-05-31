@@ -59,6 +59,19 @@
                         </li>
                     </ul>
                 </li>
+                <li class="sidebar-item has-sub">
+                    <a class='sidebar-link'>
+                        <i class="bi bi-bag"></i>
+                        <span>Peminjaman</span>
+                    </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="{{ route('peminjaman.create') }}" class="submenu-link">Tambah Peminjaman</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="{{ route('peminjaman.index') }}" class="submenu-link">List Peminjaman</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

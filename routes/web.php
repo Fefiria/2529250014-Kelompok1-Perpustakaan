@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\PeminjamanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,8 +15,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth'])->name('dashboard');
 
 Route::get('/buku/proxy-cover', [BukuController::class, 'proxyCover'])->name('buku.proxy-cover');
+
 Route::resource('/buku', BukuController::class)->middleware(['auth']);
 Route::resource('/genre', GenreController::class)->middleware(['auth']);
+Route::resource('/peminjaman', PeminjamanController::class)->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

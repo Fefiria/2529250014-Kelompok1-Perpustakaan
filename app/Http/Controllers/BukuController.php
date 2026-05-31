@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Http;
 class BukuController extends Controller
 {    
 
+    // Proxy cover image dari cloudinary untuk memghubungkan otomatis dengan filepond
     public function proxyCover(Request $request)
     {
         // Mendapatkan URl dari Cover Buku (Jika ada)
@@ -67,7 +68,8 @@ class BukuController extends Controller
             'jumlahHalaman' => 'required',
             'idGenre' => 'required|array',
             'idGenre.*' => 'integer|exists:genres,idGenre',
-            'status'=> 'required'
+            'status'=> 'required',
+            'stok' => 'required|integer|min:0'
         ], [
             'judul.required' => 'Judul buku harus di isi',
             'pengarang.required' => 'Pengarang buku harus di isi',
@@ -75,8 +77,16 @@ class BukuController extends Controller
             'tanggalTerbit.required' => 'Tanggal terbit buku harus di isi',
             'jumlahHalaman.required' => 'Jumlah halaman buku harus di isi',
             'idGenre.required' => 'Pilih minimal 1 genre untuk buku ini',   
-            'status.required' => 'Status buku harus di isi'
+            'status.required' => 'Status buku harus di isi',
+            'stok.required' => 'Stok buku harus di isi',
+            'stok.integer' => 'Stok buku harus berupa angka',
+            'stok.min' => 'Minimal stok tidak boleh kurang dari 0'
         ]);
+
+        // Jika stok buku 0, otomais set status buku menjadi tidak tersedia
+        if($input['stok'] == 0){
+            $input['status'] = 'tidak tersedia';
+        }
 
         // Mengsortir data input ke database
         $buku = Buku::create([
@@ -85,7 +95,8 @@ class BukuController extends Controller
             'penerbit' => $input['penerbit'],
             'tanggalTerbit' => $input['tanggalTerbit'],
             'jumlahHalaman' => $input['jumlahHalaman'],
-            'status' => $input['status']
+            'status' => $input['status'],
+            'stok' => $input['stok']
         ]);
 
         // Cek apakah user menambahkan photo buku? jika ditambahkan maka upload via cloudinary
@@ -154,7 +165,8 @@ class BukuController extends Controller
             'jumlahHalaman' => 'required',
             'idGenre' => 'required|array',
             'idGenre.*' => 'integer|exists:genres,idGenre',
-            'status'=> 'required'
+            'status'=> 'required',
+            'stok'=> 'required|integer|min:0'
         ], [
             'judul.required' => 'Judul buku harus di isi',
             'pengarang.required' => 'Pengarang buku harus di isi',
@@ -162,8 +174,16 @@ class BukuController extends Controller
             'tanggalTerbit.required' => 'Tanggal terbit buku harus di isi',
             'jumlahHalaman.required' => 'Jumlah halaman buku harus di isi',
             'idGenre.required' => 'Pilih minimal 1 genre untuk buku ini',   
-            'status.required' => 'Status buku harus di isi'
+            'status.required' => 'Status buku harus di isi',
+            'stok.required' => 'Stok buku harus di isi',
+            'stok.integer' => 'Stok buku harus berupa angka',
+            'stok.min' => 'Minimal stok tidak boleh kurang dari 0'
         ]);
+
+        // Jika stok buku 0, otomais set status buku menjadi tidak tersedia
+        if($input['stok'] == 0){
+            $input['status'] = 'tidak tersedia';
+        }
 
         // Mengsortir data input ke database
         $dataUpdate = [
@@ -173,6 +193,7 @@ class BukuController extends Controller
             'tanggalTerbit' => $input['tanggalTerbit'],
             'jumlahHalaman' => $input['jumlahHalaman'],
             'status' => $input['status'],
+            'stok' => $input['stok'],
             'photoUrl' => null
         ];
 
@@ -210,7 +231,7 @@ class BukuController extends Controller
      */
     public function destroy($idBuku)
     {
-        $buku = Buku::find($idBuku);
+        $buku = Buku::findOrFail($idBuku);
 
         $namaBuku = $buku->judul;
 

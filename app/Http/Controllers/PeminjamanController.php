@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use App\Models\Buku;
+use App\Models\User;
 
 class PeminjamanController extends Controller
 {
@@ -12,7 +14,8 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        //
+        $peminjaman = Peminjaman::all();
+        return view('peminjaman.index', compact('peminjaman'));
     }
 
     /**
@@ -20,7 +23,9 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $buku = Buku::all();
+        return view('peminjaman.create', compact('users','buku'));
     }
 
     /**

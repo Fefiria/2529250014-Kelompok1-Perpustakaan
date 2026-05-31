@@ -52,7 +52,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="judul-buku-column">Judul Buku</label>
                                         <div class="position-relative">
-                                            <input type="text" id="judul-buku-column" class="form-control mt-1" placeholder="Masukkan judul buku..." name="judul">
+                                            <input type="text" id="judul-buku-column" class="form-control mt-1" placeholder="Masukkan judul buku..." name="judul" value="{{ old('judul') }}">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-journal-bookmark"></i>
                                             </div>
@@ -63,7 +63,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="pengarang-column">Pengarang</label>
                                         <div class="position-relative">
-                                            <input type="text" id="pengarang-column" class="form-control mt-1" placeholder="Masukkan pengarang buku..." name="pengarang">
+                                            <input type="text" id="pengarang-column" class="form-control mt-1" placeholder="Masukkan pengarang buku..." name="pengarang" value="{{ old('pengarang') }}">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-person-lines-fill"></i>
                                             </div>
@@ -74,7 +74,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="penerbit-column">Penerbit</label>
                                         <div class="position-relative">
-                                            <input type="text" id="penerbit-column" class="form-control mt-1" placeholder="Masukkan penerbit buku..." name="penerbit">
+                                            <input type="text" id="penerbit-column" class="form-control mt-1" placeholder="Masukkan penerbit buku..." name="penerbit" value="{{ old('penerbit') }}">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-globe-americas"></i>
                                             </div>
@@ -85,7 +85,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="tanggal-terbit-column">Tanggal Terbit</label>
                                         <div class="position-relative">
-                                            <input type="text" id="tanggal-terbit-column" class="form-control mb-3 flatpickr-no-config flatpickr-input mt-1" placeholder="Masukkan tanggal terbit buku..." name="tanggalTerbit" readonly="readonly">
+                                            <input type="text" id="tanggal-terbit-column" class="form-control mb-3 flatpickr-no-config flatpickr-input mt-1" placeholder="Masukkan tanggal terbit buku..." name="tanggalTerbit" readonly="readonly" value="{{ old('tanggalTerbit') }}">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-calendar"></i>
                                             </div>
@@ -96,7 +96,7 @@
                                     <div class="form-group has-icon-left">
                                         <label for="jumlah-halaman-column">Jumlah Halaman</label>
                                         <div class="position-relative">
-                                            <input type="number" id="jumlah-halaman-column" class="form-control mt-1" placeholder="Masukkan jumlah halaman buku..." name="jumlahHalaman">
+                                            <input type="number" id="jumlah-halaman-column" class="form-control mt-1" placeholder="Masukkan jumlah halaman buku..." name="jumlahHalaman" value="{{ old('jumlahHalaman') }}">
                                             <div class="form-control-icon">
                                                 <i class="bi bi-123"></i>
                                             </div>
@@ -113,6 +113,17 @@
                                             </select>
                                             <div class="form-control-icon">
                                                 <i class="bi bi-cart2"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group has-icon-left">
+                                        <label for="stok-column">Stok</label>
+                                        <div class="position-relative">
+                                            <input type="number" id="stok-column" class="form-control mt-1" placeholder="Masukkan stok buku..." name="stok" value="{{ old('stok') }}">
+                                            <div class="form-control-icon">
+                                                <i class="bi bi-collection"></i>
                                             </div>
                                         </div>
                                     </div>

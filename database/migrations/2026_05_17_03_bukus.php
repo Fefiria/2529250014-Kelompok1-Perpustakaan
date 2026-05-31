@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggalTerbit');
             $table->integer('jumlahHalaman');
             $table->string('photoUrl')->nullable();
+            $table->integer('stok');
             $table->string('status');
             $table->timestamps();
         });
