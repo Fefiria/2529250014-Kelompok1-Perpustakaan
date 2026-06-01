@@ -27,11 +27,13 @@
                 <div class="card-content">
                     <div class="card">
                         @if($peminjamans->isEmpty())
-                            <p>Belum ada peminjaman yang ditambahkan</p>
-                            <a href="{{ route('peminjaman.create') }}" class="btn btn-primary align-items-center gap-2">
-                                <i class="bi bi-plus-circle-fill"></i>
-                                <span>Tambah Peminjaman</span>
-                            </a>
+                            <div class="card-header">
+                                <p>Belum ada peminjaman yang ditambahkan</p>
+                                <a href="{{ route('peminjaman.create') }}" class="btn btn-primary align-items-center gap-2">
+                                    <i class="bi bi-plus-circle-fill"></i>
+                                    <span>Tambah Peminjaman</span>
+                                </a>
+                            </div>
                         @else
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="card-title">Daftar Transaksi Peminjaman</h4>
@@ -74,7 +76,7 @@
                                                         @foreach($pinjam->details as $detail)
                                                         <li class="list-group-item d-flex justify-content-between align-items-center p-1 bg-transparent border-0">
                                                             <div class="text-truncate me-2" style="font-size: 0.9rem;" title="{{ $detail->buku->judul }}">
-                                                                <i class="bi bi-book text-secondary me-1"></i> {{ $detail->buku->judul }}
+                                                                <i class="bi bi-journal text-secondary me-1"></i> {{ $detail->buku->judul }}
                                                             </div>
                                                             @if($detail->status == 'dipinjam')
                                                                 <span class="badge bg-light-warning text-warning fw-normal" style="font-size: 0.75rem;">Dipinjam</span>

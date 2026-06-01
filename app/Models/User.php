@@ -24,7 +24,11 @@ class User extends Authenticatable
         'nama',
         'username',
         'email',
+        'nomorTelp',
+        'jenisKelamin',
+        'alamat',
         'password',
+        'photoUrl'
     ];
 
     protected function casts(): array

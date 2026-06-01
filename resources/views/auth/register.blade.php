@@ -11,48 +11,63 @@
                     <form method="POST" action="{{ route('register') }}" onsubmit="tampilLoadingAnimation()">
                         @csrf
 
-                        @if($errors->get('username'))
-                            <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                Username ini telah dipakai, Gunakan username lain
+                        @if($errors->any())
+                            <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{  $error }}</li>
+                                    @endforeach 
+                                </ul> 
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
-                        @elseif($errors->get('email'))
-                            <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                Email ini telah dipakai, Gunakan email lain
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @elseif($errors->get('password'))
-                            @if(Str::contains($errors->first('password'), 'confirmation') || Str::contains($errors->first('password'), 'match'))
-                                <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                    Password dan konfirmasi password tidak sesuai
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            @elseif(Str::contains($errors->first('password'), 'least'))
-                                <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                    Panjang password harus minimal 8 karakter
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            @endif
                         @endif
 
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" name="nama" class="form-control form-control-xl" value="{{ old('nama') }}" required autofocus placeholder="Masukkan nama">
+                            <input type="text" name="nama" class="form-control form-control-xl" value="{{ old('nama') }}" placeholder="Masukkan nama">
                             <div class="form-control-icon">
                                 <i class="bi bi-person-circle"></i>
                             </div>
                         </div>
 
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="text" name="username" class="form-control form-control-xl" value="{{ old('username') }}" required autofocus placeholder="Masukkan username">
+                            <input type="text" name="username" class="form-control form-control-xl" value="{{ old('username') }}" placeholder="Masukkan username">
                             <div class="form-control-icon">
                                 <i class="bi bi-person"></i>
                             </div>
                         </div>
 
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="email" name="email" class="form-control form-control-xl" value="{{ old('email') }}" required autofocus autocomplete="email" placeholder="Masukkan email">
+                            <input type="email" name="email" class="form-control form-control-xl" value="{{ old('email') }}" autocomplete="email" placeholder="Masukkan email">
                             <div class="form-control-icon">
                                 <i class="bi bi-envelope"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group position-relative has-icon-left mb-4">
+                            <input type="text" name="nomorTelp" class="form-control form-control-xl" value="{{ old('nomorTelp') }}" placeholder="Masukkan nomor telepon">
+                            <div class="form-control-icon">
+                                <i class="bi bi-phone"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group position-relative mb-4">
+                            <div class="input-group" style="height: 53px;"> 
+                                <span class="input-group-text bg-white border-end-0 text-muted d-flex align-items-center justify-content-center" style="border-top-left-radius: 0.7rem; border-bottom-left-radius: 0.7rem; width: 50px; padding: 0 !important;">
+                                    <i class="bi bi-person fs-4 d-flex align-items-center justify-content-center" style="line-height: 0;"></i>
+                                </span>
+                                
+                                <select name="jenisKelamin" class="form-select form-control-xl border-start-0" style="border-top-right-radius: 0.7rem; border-bottom-right-radius: 0.7rem; padding-left: 0.5rem; font-size: 1.1rem; height: 100%;">
+                                    <option value="" disabled {{ old('jenisKelamin') ? '' : 'selected' }}>Pilih Jenis Kelamin</option>
+                                    <option value="Laki-laki" {{ old('jenisKelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('jenisKelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group position-relative has-icon-left mb-4">
+                            <input type="text" name="alamat" class="form-control form-control-xl" value="{{ old('alamat') }}" placeholder="Masukkan alamat">
+                            <div class="form-control-icon">
+                                <i class="bi bi-building"></i>
                             </div>
                         </div>
                         

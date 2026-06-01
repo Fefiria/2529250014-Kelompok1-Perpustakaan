@@ -35,14 +35,39 @@ class BukuController extends Controller
         return response($response->body(), 200)->header('Content-Type', $response->header('Content-Type'));
     }
 
-
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bukus = Buku::with('genre')->paginate(10);
-        return view('buku.index', compact('bukus'));
+        $query = Buku::with('genre');
+
+        // Mencari buku berdasarkan judul atau pengarang
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+            $q->where(function ($sub) use ($search) {
+                $sub->where('judul', 'like', '%' . $search . '%')->orWhere('pengarang', 'like', '%' . $search . '%');
+            });
+        });
+
+        // Filter by genre dan bisa banyak genre
+        $query->when($request->filled('idGenre') && is_array($request->idGenre), function ($q) use ($request) {
+            $selectedGenres = array_filter($request->idGenre); 
+
+            if (!empty($selectedGenres)) {
+                $q->whereHas('genre', function ($sub) use ($selectedGenres) {
+                    $sub->whereIn('genres.idGenre', $selectedGenres);
+                });
+            }
+        });
+
+        // Menampilkan hasil filter
+        $bukus = $query->paginate(10)->appends($request->all());
+        
+        // Mengambil semua genre
+        $genres = Genre::all();
+
+        return view('buku.index', compact('bukus', 'genres'));
     }
 
     /**

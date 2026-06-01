@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('nomorTelp');
+            $table->string('jenisKelamin');
+            $table->string('alamat');
             $table->string('role')->default('member');
             $table->string('status')->default('active');
             $table->string('photoUrl')->nullable();

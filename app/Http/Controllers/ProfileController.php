@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+Use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -24,17 +27,63 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(Request $request, $idUser)
+    { 
+        $user = User::findOrFail($idUser);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $input = $request->validate([
+            "nama" => "required",
+            "username" => "required|unique:users,username," . $user->idUser . ",idUser",
+            "nomorTelp" => "required",
+            "jenisKelamin" => "required",
+            "alamat" => "required"
+        ],[
+            "nama.required" => "Nama harus di isi",
+            "username.required" => "Username harus di isi",
+            "username.unique" => "Username ini sudah digunakan, Gunakan username lain",
+            "nomorTelp.required" => "Nomor telepon harus di isi",
+            "jenisKelamin.required" => "Jenis kelamin harus di isi",
+            "alamat.required" => "Alamat harus di isi"
+        ]);
+
+        // Memanggil Cloudinary
+        Configuration::instance();
+        $uploadApi = new UploadApi();
+
+        $input['photoUrl'] = $user->photoUrl;
+
+        if ($request->is_avatar_deleted == '1') {
+            if ($user->photoUrl) {
+                $publicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
+                $uploadApi->destroy($publicId);
+                $input['photoUrl'] = null;
+            }
+        } elseif ($request->hasFile('avatar')) {
+            
+            if ($user->photoUrl) {
+                $oldPublicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
+                $uploadApi->destroy($oldPublicId);
+            }
+            
+            $uploadResponse = $uploadApi->upload($request->file('avatar')->getRealPath(), [
+                'folder' => 'user'
+            ]);
+            
+            $newPhotoUrl = $uploadResponse['secure_url'];
+            
+            $input['photoUrl'] = $newPhotoUrl;
         }
 
-        $request->user()->save();
+        $user->update([
+            "nama" => $input['nama'],
+            "username" => $input['username'],
+            "nomorTelp" => $input['nomorTelp'],
+            "jenisKelamin" => $input['jenisKelamin'],
+            "alamat" => $input['alamat'],
+            "photoUrl" => $input['photoUrl'] 
+        ]);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return redirect()->route('profile.edit')->with('success','Berhasil mengupdate profile');
     }
 
     /**

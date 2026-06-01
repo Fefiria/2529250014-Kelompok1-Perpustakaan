@@ -84,7 +84,7 @@
                         class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         <div class="avatar avatar-md2 me-2">
-                            <img src="{{ asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
+                            <img src="{{ Auth::user()->photoUrl ?? asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
                         </div>
                         <div class="text text-start">
                             <h6 class="user-dropdown-name mb-0 text-dark-theme-white"
@@ -96,8 +96,8 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg" aria-labelledby="topbarUserDropdown">
-                        <li><a class="dropdown-item" href="#">My Account</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.security') }}">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

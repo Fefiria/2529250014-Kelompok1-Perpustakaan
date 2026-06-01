@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('idUser');
             $table->foreign('idUser')->references('idUser')->on('users')->onDelete('cascade');
             $table->date('tanggalPeminjaman');
+            $table->date('tanggalKembali');
             $table->integer('lamaPinjam');
             $table->string('status');
             $table->text('catatan')->nullable();
