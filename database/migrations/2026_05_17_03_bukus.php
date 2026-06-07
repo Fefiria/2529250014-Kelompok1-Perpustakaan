@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('photoUrl')->nullable();
             $table->integer('stok');
             $table->string('status');
-            $table->timestamps();
+            $table->text('ringkasan');
+            $table->timestamps()->nullable();
         });
     }
 

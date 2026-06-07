@@ -13,7 +13,7 @@ class GenreController extends Controller
     public function index()
     {
         $genres = Genre::withCount('buku')->paginate(10);
-        return view('genre.index', compact('genres'));
+        return view('admin.genre.index', compact('genres'));
     }
 
     /**
@@ -21,7 +21,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        return view('genre.create');
+        return view('admin.genre.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class GenreController extends Controller
 
         $genre = Genre::create($input);
 
-        return redirect()->route('genre.index')->with('success', 'Berhasil menambahkan genre dengan nama ' . $genre->nama . '');
+        return redirect()->route('admin.genre.index')->with('success', 'Berhasil menambahkan genre dengan nama ' . $genre->nama . '');
     }
 
     /**
@@ -56,7 +56,7 @@ class GenreController extends Controller
      */
     public function edit(Genre $genre)
     {
-        return view('genre.edit', compact('genre'));
+        return view('admin.genre.edit', compact('genre'));
     }
 
     /**
@@ -77,7 +77,7 @@ class GenreController extends Controller
 
         $genre->update($input);
 
-        return redirect()->route('genre.index')->with('success', 'Berhasil update genre dengan nama ' . $genre->nama . '');
+        return redirect()->route('admin.genre.index')->with('success', 'Berhasil update genre dengan nama ' . $genre->nama . '');
     }
 
     /**
@@ -88,7 +88,7 @@ class GenreController extends Controller
         $genres = Genre::find($genre);
         if($genre){
             $genre->delete();
-            return redirect()->route('genre.index')->with('success', 'Berhasil menghapus genre!');
+            return redirect()->route('admin.genre.index')->with('success', 'Berhasil menghapus genre!');
         }
     }
 }

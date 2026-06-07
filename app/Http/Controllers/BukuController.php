@@ -11,6 +11,10 @@ use Cloudinary\Api\Upload\UploadApi;
 
 use Illuminate\Support\Facades\Http;
 
+use Gemini\Enums\ModelVariation;
+use Gemini\GeminiHelper;
+use Gemini;
+
 class BukuController extends Controller
 {    
 
@@ -67,7 +71,7 @@ class BukuController extends Controller
         // Mengambil semua genre
         $genres = Genre::all();
 
-        return view('buku.index', compact('bukus', 'genres'));
+        return view('admin.buku.index', compact('bukus', 'genres'));
     }
 
     /**
@@ -76,7 +80,7 @@ class BukuController extends Controller
     public function create()
     {
         $genre = Genre::all();
-        return view('buku.create', compact('genre'));
+        return view('admin.buku.create', compact('genre'));
     }
 
     /**
@@ -107,6 +111,30 @@ class BukuController extends Controller
             'stok.integer' => 'Stok buku harus berupa angka',
             'stok.min' => 'Minimal stok tidak boleh kurang dari 0'
         ]);
+
+
+        $prompt = "Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul '{$input['judul']}' karya '{$input['pengarang']}'. Langsung berikan isi ringkasannya saja tanpa basa-basi.";
+
+        try {
+            $response = Http::withToken(env('GROQ_API_KEY'))
+                ->post('https://api.groq.com/openai/v1/chat/completions', [
+                    'model' => 'llama-3.3-70b-versatile', 
+                    'messages' => [
+                        ['role' => 'user', 'content' => $prompt]
+                    ],
+                ]);
+
+            $resArray = $response->json();
+
+            if (isset($resArray['choices'][0]['message']['content'])) {
+                $hasilSummary = $resArray['choices'][0]['message']['content'];
+            } else {
+                $hasilSummary = null;
+            }
+            
+        } catch (\Exception $e) {
+            $hasilSummary = null;
+        }
 
         // Jika stok buku 0, otomais set status buku menjadi tidak tersedia
         if($input['stok'] == 0){
@@ -142,13 +170,19 @@ class BukuController extends Controller
                 'photoUrl' => $photoUrl
             ]);
         }
+        
+        if($hasilSummary){
+            $buku->update([
+                'ringkasan' => $hasilSummary
+            ]);
+        }
 
         // Memasukkan id genre ke dalam tabel relasi antara buku dan genre
         $genre = $request->input('idGenre');
         $buku->genre()->attach($genre);
 
         // Kembalikan user ke index dan beritahu bahwa buku yang ditambahkan telah berhasil
-        return redirect()->route('buku.index')->with('success', 'Berhasil menambahkan buku dengan nama ' . $buku->judul);
+        return redirect()->route('admin.buku.index')->with('success', 'Berhasil menambahkan buku dengan nama ' . $buku->judul);
     }
 
     /**
@@ -167,7 +201,7 @@ class BukuController extends Controller
         try {
             $buku = Buku::findOrFail($idBuku);
             $genre = Genre::all();
-            return view('buku.edit', compact('buku', 'genre'));
+            return view('admin.buku.edit', compact('buku', 'genre'));
         } catch (ModelNotFoundException $e) {
             abort(404);
         }
@@ -243,7 +277,7 @@ class BukuController extends Controller
         $buku->genre()->sync($request->idGenre);
 
         // Kembalikan user ke index dan beritahu bahwa buku yang ditambahkan telah berhasil
-        return redirect()->route('buku.index')->with('success', 'Berhasil mengupdate buku dengan nama ' . $buku->judul);
+        return redirect()->route('admin.buku.index')->with('success', 'Berhasil mengupdate buku dengan nama ' . $buku->judul);
     }
 
     /**
@@ -257,7 +291,7 @@ class BukuController extends Controller
 
         $buku->delete();
 
-        return redirect()->route('buku.index')->with('success','Berhasil menghapus buku ' . $namaBuku);
+        return redirect()->route('admin.buku.index')->with('success','Berhasil menghapus buku ' . $namaBuku);
     }
 
 }

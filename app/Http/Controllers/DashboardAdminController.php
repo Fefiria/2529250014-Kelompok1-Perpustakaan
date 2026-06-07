@@ -9,7 +9,7 @@ use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class DashboardAdminController extends Controller
 {
     public function index()
     {
@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $labelBukuPopuler = $topBooks->pluck('judul')->toArray();
         $jumlahBukuPopuler = $topBooks->pluck('total_dipinjam')->toArray();
 
-        return view('dashboard', compact(
+        return view('admin.dashboard', compact(
             'jumlahBuku',
             'jumlahAnggota',
             'jumlahPeminjaman',

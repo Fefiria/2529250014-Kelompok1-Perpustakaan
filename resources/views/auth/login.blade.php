@@ -1,4 +1,6 @@
-<x-auth-layout>
+@extends('layouts.auth')
+
+@section('content')
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
@@ -14,7 +16,11 @@
 
                         @if($errors->any())
                             <div class="alert alert-danger alert-dismissible show fade" role="alert">
-                                Email atau password yang dimasukkan tidak valid
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{  $error }}</li>
+                                    @endforeach 
+                                </ul> 
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
@@ -34,7 +40,7 @@
                         </div>
 
                         <div class="form-check form-check-lg d-flex align-items-end">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="formRememberMe">
+                            <input class="form-check-input me-2" type="checkbox" id="formRememberMe" name="remember">
                             <label class="form-check-label text-gray-600" for="formRememberMe">
                                 Ingatkan Saya
                             </label>
@@ -66,4 +72,4 @@
             </div>
         </div>
     </div>
-</x-auth-layout>
+@endsection

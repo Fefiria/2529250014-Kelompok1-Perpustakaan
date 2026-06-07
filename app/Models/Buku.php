@@ -17,7 +17,8 @@ class Buku extends Model
         "idGenre",
         "photoUrl",
         "status",
-        "stok"
+        "stok",
+        "ringkasan"
     ];
 
     // Deklarasi nama table dan primary key agar dikenali oleh Laravel

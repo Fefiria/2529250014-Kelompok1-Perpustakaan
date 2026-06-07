@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('admin.layouts.main')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.min.css') }}">
@@ -7,35 +7,19 @@
 
 @section('content')
 <div class="page-heading">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>List Buku</h3>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first d-flex flex-column align-items-start align-items-md-end justify-content-between">
-                <nav aria-label="breadcrumb" class="breadcrumb-header mb-3 mb-md-0">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">List Buku</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-    
     <div class="row match-height">
         <div class="col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title">Daftar Buku</h4>
-                        <a href="{{ route('buku.create') }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('admin.buku.create') }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-plus-circle"></i> Tambah Buku
                         </a>
                     </div>
 
                     <div class="card-body border-bottom border-secondary pb-3">
-                        <form action="{{ route('buku.index') }}" method="GET" id="form-filter-buku">
+                        <form action="{{ route('admin.buku.index') }}" method="GET" id="form-filter-buku">
                             <input type="hidden" name="is_searching" id="is_searching" value="{{ request('is_searching', 'false') }}">
 
                             <div class="row g-3">
@@ -67,7 +51,7 @@
                             <i class="bi bi-journal-bookmark text-muted" style="font-size: 3rem;"></i>
                             <p class="mt-2 text-white">Buku tidak ditemukan</p>
                             @if(!request('search') && !request('genreIds'))
-                                <a href="{{ route('buku.create') }}" class="btn btn-primary align-items-center gap-2 btn-sm">
+                                <a href="{{ route('admin.buku.create') }}" class="btn btn-primary align-items-center gap-2 btn-sm">
                                     <i class="bi bi-plus-circle-fill"></i> Tambah Buku
                                 </a>
                             @endif
@@ -120,10 +104,10 @@
                                             <td class="text-bold-200">{{ $buku->stok }} Buku</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <a href="{{ route('buku.edit', $buku->idBuku) }}" class="btn btn-sm border text-primary" data-bs-toggle="tooltip" title="Edit Buku">
+                                                    <a href="{{ route('admin.buku.edit', $buku->idBuku) }}" class="btn btn-sm border text-primary" data-bs-toggle="tooltip" title="Edit Buku">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
-                                                    <form method="POST" action="{{ route('buku.destroy', $buku->idBuku) }}" class="m-0" onsubmit="displayAlert(event, this, '{{ $buku->judul }}', 'warning')">
+                                                    <form method="POST" action="{{ route('admin.buku.destroy', $buku->idBuku) }}" class="m-0" onsubmit="displayAlert(event, this, '{{ $buku->judul }}', 'warning')">
                                                         @csrf
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button class="btn btn-sm border text-danger" type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Buku">

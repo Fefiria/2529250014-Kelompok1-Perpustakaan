@@ -82,7 +82,7 @@ class SecurityController extends Controller
         return back()->with('success', 'Alamat email berhasil diperbarui');
     }
 
-    public function deleteAccount(Request $request, $idUser){
+    public function deleteAccount($idUser){
         $user = User::findOrFail($idUser);
 
         $user->delete();

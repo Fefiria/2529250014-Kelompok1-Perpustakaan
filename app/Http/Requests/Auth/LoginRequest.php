@@ -46,7 +46,20 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Email atau password yang dimasukkan tidak valid',
+            ]);
+        }
+
+        $user = Auth::user();
+
+        if($user->status !== 'active'){
+            Auth::logout();
+
+            $this->session()->invalidate();
+            $this->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'email' => 'Akun anda telah dinonaktifkan, Silahkan hubungi petugas perpustakaan untuk info lebih lanjut',
             ]);
         }
 
@@ -81,6 +94,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }

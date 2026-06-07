@@ -15,17 +15,17 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 }, false);
 
-function displayAlert(event, form, nama, type){
+function displayAlert(event, form, message, type){
     event.preventDefault();
 
     Swal.fire({
         title: "Konfirmasi",
-        text: `Apakah Anda yakin ingin menghapus data ${nama} ini?`,
+        text: `${message}`,
         icon: type,
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "Ya, Hapus!",
+        confirmButtonText: "Ya",
         cancelButtonText: "Batal",
     }).then((result) => {
         if(result.isConfirmed){

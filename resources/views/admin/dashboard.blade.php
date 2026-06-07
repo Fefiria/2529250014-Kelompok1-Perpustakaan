@@ -1,8 +1,8 @@
-@extends('layouts.main')
+@extends('admin.layouts.main')
 
 @section('content')
     <div class="page-heading">
-        <h3>Selamat Datang di Dashboard Perpustakaan</h3>
+        <h3>Dashboard Perpustakaan</h3>
     </div>
 
     <div class="page-content">

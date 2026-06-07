@@ -11,7 +11,7 @@
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Security</li>
                     </ol>
                 </nav>
@@ -72,7 +72,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title">Ganti Alamat Email</h5>
+                        <h5 class="card-title">Update Email</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('profile.security.updateEmail', auth()->user()->idUser) }}" method="POST">
@@ -92,7 +92,7 @@
 
                             <div class="form-group my-2">
                                 <label for="email" class="form-label">Email Baru</label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan alamat email baru" value="{{ old('email', auth()->user()->email) }}">
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan email baru" value="{{ old('email', auth()->user()->email) }}">
                             </div>
 
                             <div class="form-group my-2">

@@ -17,7 +17,7 @@ class PeminjamanController extends Controller
     public function index()
     {
         $peminjamans = Peminjaman::with(['user', 'details.buku'])->get();        
-        return view('peminjaman.index', compact('peminjamans'));
+        return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
     /**
@@ -27,7 +27,7 @@ class PeminjamanController extends Controller
     {
         $users = User::all();
         $buku = Buku::all();
-        return view('peminjaman.create', compact('users','buku'));
+        return view('admin.peminjaman.create', compact('users','buku'));
     }
 
     /**
@@ -66,7 +66,7 @@ class PeminjamanController extends Controller
             'tanggalKembali' => $tanggalKembali->format('Y-m-d'),
             'lamaPinjam' => $request->lamaPinjam,
             'catatan'     => $request->keterangan,
-            'status'         => 'dipinjam',
+            'status'         => 'Aktif',
         ]);
 
         // Sinkronisasi antara buku dan peminjaman serta pengurangan stok buku
@@ -86,7 +86,7 @@ class PeminjamanController extends Controller
             }
         }
 
-        return redirect()->route('peminjaman.index')->with('success', 'Berhasil melakukan peminjaman');
+        return redirect()->route('admin.peminjaman.index')->with('success', 'Berhasil melakukan peminjaman');
     }
 
     /**
@@ -100,15 +100,17 @@ class PeminjamanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Peminjaman $peminjaman)
+    public function edit($idPeminjaman)
     {
-        //
+        $peminjaman = Peminjaman::findOrFail($idPeminjaman);
+
+        return view('admin.peminjaman.edit', compact('peminjaman'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Peminjaman $peminjaman)
+    public function update(Request $request, $idPeminjaman)
     {
         //
     }
@@ -116,8 +118,72 @@ class PeminjamanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Peminjaman $peminjaman)
+    public function destroy($idPeminjaman)
     {
-        //
+        // Mencari detail peminjaman yang memiliki id peminjaman ingin di hapus
+        $detailPeminjaman = DetailPeminjaman::where('idPeminjaman', $idPeminjaman)->get();
+
+        // Jika status buku belum dikmbalikan, kembalikan stok buku dan hapus tiap detail peminjaman dalam peminjaman
+        foreach($detailPeminjaman as $peminjaman){
+            if($peminjaman->status != 'dikembalikan'){
+                $buku = Buku::findOrFail($peminjaman->idBuku);
+                $buku->increment('stok');
+            }
+
+            $peminjaman->delete();
+        }
+
+        // Menghapus peminjaman
+        $peminjaman = Peminjaman::findOrFail($idPeminjaman);
+
+        $peminjaman->delete();
+
+        return redirect()->route('admin.peminjaman.index')->with('success','Berhasil menghapus peminjaman');
+    }
+
+    /**
+     * Method untuk update detail peminjaman
+     */
+    public function updateDetail($idPeminjaman, $idDetailPeminjaman)
+    {
+        $detail = DetailPeminjaman::where('idPeminjaman', $idPeminjaman)->where('idDetailPeminjaman', $idDetailPeminjaman)->firstOrFail();
+
+        // Mengantisipasi jika status sudah dikembalikan dan ingin mengembalikan lagi
+        if($detail->status == 'dikembalikan') {
+            return redirect()->back()->with('error', 'Buku ini sudah dikembalikan sebelumnya');
+        }
+
+        // Mengupdate status buku di detail peminjaman menjadi dikembalikan
+        $detail->update(['status' => 'dikembalikan']);
+
+        // Menghitung total buku dalam 1 peminjaman
+        $totalBuku = DetailPeminjaman::where('idPeminjaman', $idPeminjaman)->count();
+
+        // Menghitung berapa buku yang sudah di kembalikan dalam 1 peminjaman
+        $bukuKembali = DetailPeminjaman::where('idPeminjaman', $idPeminjaman)->where('status', 'dikembalikan')->count();
+
+        // Mengambil data peminjaman
+        $peminjaman = Peminjaman::findOrFail($idPeminjaman);
+
+        // Mengambil data buku
+        $buku = Buku::findOrFail($detail->idBuku);
+
+        // Logika if else kondisi untuk status peminjaman
+        if($bukuKembali == 0){
+            $status = 'Aktif';
+        } else if($bukuKembali < $totalBuku){
+            $status = 'Dikembalikan Sebagian';
+        } else {
+            $status = 'Telah Dikembalikan';
+        }
+
+        // Mengupdate status peminjaman berdasarkan logika if else konfisi
+        $peminjaman->update(['status' => $status]);
+
+        // Mengembalikan stok buku
+        $buku->increment('stok');
+
+        // Mengembalikan return ke kelola peminjaman dengan pesan bahwa buku berhasil dikembalikan
+        return redirect()->route('admin.peminjaman.edit', $idPeminjaman)->with('success','Berhasil mengembalikan buku dengan judul ' . $buku->judul);
     }
 }

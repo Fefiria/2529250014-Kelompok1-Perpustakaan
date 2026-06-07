@@ -1,4 +1,6 @@
-<x-auth-layout>
+@extends('layouts.auth')
+
+@section('content')
     <div id="auth">
         <div class="row h-100">
             <div class="col-lg-5 col-12">
@@ -106,4 +108,4 @@
             </div>
         </div>
     </div>
-</x-auth-layout>
+@endsection

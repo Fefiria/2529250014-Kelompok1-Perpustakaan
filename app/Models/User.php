@@ -28,7 +28,8 @@ class User extends Authenticatable
         'jenisKelamin',
         'alamat',
         'password',
-        'photoUrl'
+        'photoUrl',
+        'role'
     ];
 
     protected function casts(): array

@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center justify-content-center w-100 position-relative">
                 <div class="d-flex align-items-center gap-3">
                     <div class="logo">
-                        <a href="{{ route('dashboard') }}">
+                        <a href="{{ route('admin.dashboard') }}">
                             <img src="{{ asset('assets/compiled/png/logo.png') }}" alt="Logo"
                                 style="width: 45px; height: 45px;">
                         </a>
@@ -26,7 +26,7 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 <li class="sidebar-item active">
-                    <a href="{{ route('dashboard') }}" class='sidebar-link'>
+                    <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -38,10 +38,10 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item">
-                            <a href="{{ route('buku.create') }}" class="submenu-link">Tambah Buku</a>
+                            <a href="{{ route('admin.buku.create') }}" class="submenu-link">Tambah Buku</a>
                         </li>
                         <li class="submenu-item">
-                            <a href="{{ route('buku.index') }}" class="submenu-link">List Buku</a>
+                            <a href="{{ route('admin.buku.index') }}" class="submenu-link">List Buku</a>
                         </li>
                     </ul>
                 </li>
@@ -52,10 +52,10 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item">
-                            <a href="{{ route('genre.create') }}" class="submenu-link">Tambah Genre</a>
+                            <a href="{{ route('admin.genre.create') }}" class="submenu-link">Tambah Genre</a>
                         </li>
                         <li class="submenu-item">
-                            <a href="{{ route('genre.index') }}" class="submenu-link">List Genre</a>
+                            <a href="{{ route('admin.genre.index') }}" class="submenu-link">List Genre</a>
                         </li>
                     </ul>
                 </li>
@@ -66,10 +66,24 @@
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item">
-                            <a href="{{ route('peminjaman.create') }}" class="submenu-link">Tambah Peminjaman</a>
+                            <a href="{{ route('admin.peminjaman.create') }}" class="submenu-link">Tambah Peminjaman</a>
                         </li>
                         <li class="submenu-item">
-                            <a href="{{ route('peminjaman.index') }}" class="submenu-link">List Peminjaman</a>
+                            <a href="{{ route('admin.peminjaman.index') }}" class="submenu-link">List Peminjaman</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item has-sub">
+                    <a class='sidebar-link'>
+                        <i class="bi bi-people-fill"></i>
+                        <span>User</span>
+                    </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="{{ route('admin.user.create') }}" class="submenu-link">Tambah User</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="{{ route('admin.user.index') }}" class="submenu-link">List User</a>
                         </li>
                     </ul>
                 </li>
