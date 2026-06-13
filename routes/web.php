@@ -3,8 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\MenuMemberController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\ReviewBukuController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
@@ -28,12 +31,21 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/security/password/{idUser}', [SecurityController::class, 'updatePassword'])->name('profile.security.updatePassword');
     Route::put('/profile/security/email/{idUser}', [SecurityController::class, 'updateEmail'])->name('profile.security.updateEmail');
     Route::delete('/profile/security/{idUser}', [SecurityController::class, 'deleteAccount'])->name('profile.security.deleteAccount');
-    
 });
 
 // Route khusus Member
 Route::middleware('auth', IsMember::class)->group(function () {
+    Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
 
+    Route::get('/listbuku', [MemberController::class, 'listbuku'])->name('member.listbuku');
+
+    Route::get('/riwayatpeminjaman', [MemberController::class, 'riwayatpeminjaman'])->name('member.riwayatpeminjaman');
+
+    Route::post('/member/review/store/{idBuku}', [ReviewBukuController::class, 'store'])->name('member.review.store');
+    
+    Route::put('/member/review/update/{idReview}', [ReviewBukuController::class, 'update'])->name('member.review.update');
+    
+    Route::delete('/member/review/delete/{idReview}', [ReviewBukuController::class, 'destroy'])->name('member.review.destroy');
 });
 
 // Route khusus Admin / Superadmin

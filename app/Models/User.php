@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Buku;
 
 #[Fillable(['nama', 'username', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -38,5 +39,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relasi antara user dan review
+    public function review()
+    {
+        // Parameter 1: Model target (bukus)
+        // Parameter 2: Nama tabel pivot/penengah di database (review_bukus)
+        // Parameter 3: Foreign key milik model ini di tabel pivot (idUser)
+        // Parameter 4: Foreign key milik model target di tabel pivot (idBuku)
+        return $this->belongsToMany(Buku::class, 'review_bukus', 'idUser', 'idBuku')->withPivot('idReview', 'rating', 'pesan');
     }
 }

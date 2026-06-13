@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center justify-content-center w-100 position-relative">
                 <div class="d-flex align-items-center gap-3">
                     <div class="logo">
-                        <a href="{{ route('admin.dashboard') }}">
+                        <a href="{{ route('member.dashboard') }}">
                             <img src="{{ asset('assets/compiled/png/logo.png') }}" alt="Logo"
                                 style="width: 45px; height: 45px;">
                         </a>
@@ -25,67 +25,23 @@
         <div class="sidebar-menu flex-grow-1">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                <li class="sidebar-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
+                <li class="sidebar-item {{ Route::is('member.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('member.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.buku.*') ? 'active' : '' }}">
-                    <a class='sidebar-link'>
+                <li class="sidebar-item {{ Route::is('member.listbuku') ? 'active' : '' }}">
+                    <a class='sidebar-link' href="{{ route('member.listbuku') }}">
                         <i class="bi bi-journal-bookmark"></i>
-                        <span>Buku</span>
+                        <span>List Buku</span>
                     </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.buku.create') }}" class="submenu-link">Tambah Buku</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.buku.index') }}" class="submenu-link">List Buku</a>
-                        </li>
-                    </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.genre.*') ? 'active' : '' }}">
-                    <a class='sidebar-link'>
-                        <i class="bi bi-box-seam"></i>
-                        <span>Genre</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.genre.create') }}" class="submenu-link">Tambah Genre</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.genre.index') }}" class="submenu-link">List Genre</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.peminjaman.*') ? 'active' : '' }}">
-                    <a class='sidebar-link'>
+                <li class="sidebar-item {{ Route::is('member.riwayatpeminjaman') ? 'active' : '' }}"">
+                    <a class='sidebar-link' href="{{ route('member.riwayatpeminjaman') }}">
                         <i class="bi bi-bag"></i>
-                        <span>Peminjaman</span>
+                        <span>Riwayat Peminjaman</span>
                     </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.peminjaman.create') }}" class="submenu-link">Tambah Peminjaman</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.peminjaman.index') }}" class="submenu-link">List Peminjaman</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.user.*') ? 'active' : '' }}">
-                    <a class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
-                        <span>User</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.user.create') }}" class="submenu-link">Tambah User</a>
-                        </li>
-                        <li class="submenu-item">
-                            <a href="{{ route('admin.user.index') }}" class="submenu-link">List User</a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </div>
@@ -94,9 +50,7 @@
             <div class="d-flex justify-content-between align-items-center w-100">
 
                 <div class="dropdown">
-                    <a href="#" id="topbarUserDropdown"
-                        class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                    <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="avatar avatar-md2 me-2">
                             <img src="{{ Auth::user()->photoUrl ?? asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
                         </div>
@@ -112,9 +66,7 @@
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg" aria-labelledby="topbarUserDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
                         <li><a class="dropdown-item" href="{{ route('profile.security') }}">Settings</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

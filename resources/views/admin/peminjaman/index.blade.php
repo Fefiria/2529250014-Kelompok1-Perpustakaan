@@ -65,9 +65,9 @@
                                                             </div>
                                                             
                                                             @if($detail->status == 'dipinjam')
-                                                                <span class="badge bg-light-warning text-warning fw-semibold px-2 py-1" style="font-size: 0.72rem;">Dipinjam</span>
+                                                                <span class="badge bg-primary text-white fw-semibold px-2 py-1" style="font-size: 0.72rem;">Dipinjam</span>
                                                             @else
-                                                                <span class="badge bg-light-success text-success fw-semibold px-2 py-1" style="font-size: 0.72rem;">Dikembalikan</span>
+                                                                <span class="badge bg-success text-white fw-semibold px-2 py-1" style="font-size: 0.72rem;">Dikembalikan</span>
                                                             @endif
                                                         </li>
                                                         @endforeach
@@ -84,11 +84,13 @@
                                                 
                                                 <td class="text-center">
                                                     @if($pinjam->status == 'Aktif')
-                                                        <span class="badge bg-danger text-dark fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">Aktif</span>
+                                                        <span class="badge bg-primary text-white fw-bold px-3 py-2 rounded-pill 6shadow-sm" style="font-size: 0.75rem;">Aktif</span>
                                                     @elseif($pinjam->status == 'Dikembalikan Sebagian')
                                                         <span class="badge bg-warning text-white fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">Dikembalikan Sebagian</span>
-                                                    @else
+                                                    @elseif($pinjam->status == 'Telah Dikembalikan')
                                                         <span class="badge bg-success text-white fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">Telah Dikembalikan</span>
+                                                    @else
+                                                        <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-pill 6shadow-sm" style="font-size: 0.75rem;">Terlambat</span>
                                                     @endif
                                                 </td>
                                                 
