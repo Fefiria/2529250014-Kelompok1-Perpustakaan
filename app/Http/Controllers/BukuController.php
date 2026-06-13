@@ -11,10 +11,6 @@ use Cloudinary\Api\Upload\UploadApi;
 
 use Illuminate\Support\Facades\Http;
 
-use Gemini\Enums\ModelVariation;
-use Gemini\GeminiHelper;
-use Gemini;
-
 class BukuController extends Controller
 {    
 
@@ -43,7 +39,7 @@ class BukuController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {        
         $query = Buku::with('genre');
 
         // Mencari buku berdasarkan judul atau pengarang
@@ -113,16 +109,25 @@ class BukuController extends Controller
         ]);
 
 
-        $prompt = "Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul '{$input['judul']}' karya '{$input['pengarang']}'. Langsung berikan isi ringkasannya saja tanpa basa-basi.";
+        // Ambil judul buku dinamis dari database lu
+        $judul = $input['judul'];
+        $pengarang = $input['pengarang']; 
+
+        $prompt = <<<EOT
+        Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul "$judul" karya "$pengarang". 
+
+        Ketentuan:
+        1. Langsung berikan isi ringkasannya saja dalam 4-6 kalimat tanpa kalimat basa-basi pembuka (seperti "Tentu, ini ringkasannya") atau penutup.
+        2. Jika lu benar-benar tidak tahu sama sekali tentang buku ini (judul asal ketik), cukup jawab: "Tidak ada informasi yang tersedia untuk buku ini."
+        EOT;
 
         try {
-            $response = Http::withToken(env('GROQ_API_KEY'))
-                ->post('https://api.groq.com/openai/v1/chat/completions', [
-                    'model' => 'llama-3.3-70b-versatile', 
-                    'messages' => [
-                        ['role' => 'user', 'content' => $prompt]
-                    ],
-                ]);
+            $response = Http::withToken(env('GROQ_API_KEY'))->post('https://api.groq.com/openai/v1/chat/completions', [
+                'model' => 'llama-3.3-70b-versatile', 
+                'messages' => [
+                    ['role' => 'user', 'content' => $prompt]
+                ],
+            ]);
 
             $resArray = $response->json();
 
@@ -188,9 +193,8 @@ class BukuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Buku $buku)
+    public function show()
     {
-        //
     }
 
     /**

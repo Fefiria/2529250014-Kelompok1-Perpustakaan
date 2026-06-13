@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use App\Models\DetailPeminjaman;
+use App\Models\Denda;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\User;
