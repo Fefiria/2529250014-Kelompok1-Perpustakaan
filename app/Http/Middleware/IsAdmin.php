@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use App\Services\DendaService;
 
 class IsAdmin
 {
@@ -18,10 +17,9 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role === 'superadmin')) {
-            DendaService::hitungOtomatis();
             return $next($request);
+        } else {
+            abort(403);
         }
-        
-        return redirect()->route('dashboard');
     }
 }

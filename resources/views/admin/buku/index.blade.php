@@ -20,20 +20,20 @@
 
                     <div class="card-body border-bottom border-secondary pb-3">
                         <form action="{{ route('admin.buku.index') }}" method="GET" id="form-filter-buku">
-                            <div class="row g-3 align-items-end">
-                                <div class="col-md-5 col-12">
+                            <input type="hidden" name="is_searching" id="is_searching" value="{{ request('is_searching', 'false') }}">
+
+                            <div class="row g-3">
+                                <div class="col-md-6 col-12">
                                     <label class="form-label text-white fw-bold small mb-1">Cari Buku menggunakan Judul/Author</label>
                                     <div class="input-group">
-                                        <span class="input-group-text border-secondary text-muted search-addon d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-search"></i>
-                                        </span>
+                                        <span class="input-group-text border-secondary text-muted search-addon d-flex align-items-center justify-content-center"><i class="bi bi-search"></i></span>
                                         <input type="text" class="form-control border-secondary text-white custom-search-input" id="search-buku" name="search" value="{{ request('search') }}" placeholder="Ketik judul buku atau nama pengarang...">
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-6 col-12">
                                     <label class="form-label text-white fw-bold small mb-1">Tampil buku berdasarkan kategori</label>
-                                    <select class="choices form-select" name="idGenre[]" id="filter-genre" multiple="multiple">
+                                    <select class="choices form-select" name="idGenre[]" id="filter-genre" multiple="multiple" onchange="submitForm('false')">
                                         @foreach($genres as $g)
                                             <option value="{{ $g->idGenre }}" 
                                                 {{ is_array(request('idGenre')) && in_array($g->idGenre, request('idGenre')) ? 'selected' : '' }}>
@@ -41,26 +41,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-
-                                <div class="col-md-3 col-12">
-                                    <label class="form-label d-none d-md-block">&nbsp;</label> 
-                                    
-                                    <div class="d-flex gap-2 w-100">
-                                        <button type="submit" class="btn btn-primary w-50 d-flex align-items-center justify-content-center gap-2">
-                                            <i class="bi bi-search mb-2"></i> Cari
-                                        </button>
-                                        
-                                        @if(request('search') || request('idGenre'))
-                                            <a href="{{ route('admin.buku.index') }}" class="btn btn-danger text-white w-50 d-flex align-items-center justify-content-center gap-2">
-                                                <i class="bi bi-arrow-clockwise mb-2"></i> Reset
-                                            </a>
-                                        @else
-                                            <button type="button" class="btn btn-secondary w-50 d-flex align-items-center justify-content-center gap-2 disabled" style="opacity: 0.5;">
-                                                <i class="bi bi-arrow-clockwise mb-2"></i> Reset
-                                            </button>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -73,7 +53,7 @@
                             @if(!request('search') && !request('genreIds'))
                                 <a href="{{ route('admin.buku.create') }}" class="btn btn-primary align-items-center gap-2 btn-sm">
                                     <i class="bi bi-plus-circle-fill"></i> Tambah Buku
-                                </a>    
+                                </a>
                             @endif
                         </div>
                     @else
@@ -108,9 +88,9 @@
                                             <td class="text-bold-200 text-white">{{ $buku->judul }}</td>
                                             <td class="text-bold-200">{{ $buku->pengarang }}</td>
                                             <td>
-                                                <div class="d-flex flex-wrap gap-2">
+                                                <div class="d-flex flex-wrap gap-1">
                                                     @foreach($buku->genre as $genre)
-                                                        <span class="badge bg-primary text-white text-xs mb-1">
+                                                        <span class="badge bg-light-primary text-primary text-xs mb-1">
                                                             {{ $genre->nama }}
                                                         </span>
                                                     @endforeach
@@ -175,7 +155,10 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form-filter-buku');
+            const searchInput = document.getElementById('search-buku');
             const genreSelect = document.getElementById('filter-genre');
+            const isSearchingInput = document.getElementById('is_searching');
 
             if (genreSelect) {
                 const choices = new Choices(genreSelect, {
@@ -186,7 +169,29 @@
                     shouldSort: false,
                     itemSelectText: '',
                 });
-            }            
+
+                genreSelect.addEventListener('change', function() {
+                    if (isSearchingInput) isSearchingInput.value = 'false';
+                    form.submit();
+                });
+            }
+
+            let delayTimer;
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    if (isSearchingInput) isSearchingInput.value = 'true';
+                    clearTimeout(delayTimer);
+                    delayTimer = setTimeout(function() {
+                        form.submit(); 
+                    }, 500);
+                });
+
+                if (isSearchingInput && isSearchingInput.value === 'true') {
+                    const strLength = searchInput.value.length;
+                    searchInput.focus();
+                    searchInput.setSelectionRange(strLength, strLength);
+                }
+            }
         });
     </script>
 @endpush

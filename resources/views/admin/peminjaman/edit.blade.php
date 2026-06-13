@@ -107,33 +107,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3">
-                                            <!-- 🟢 DISPLAY STATUS PEMINJAMAN -->
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <span class="text-muted d-block mb-1" style="font-size: 0.9rem;">Status Peminjaman</span>
-                                                
-                                                @if($peminjaman->status == 'Aktif')
-                                                    <span class="badge bg-primary text-white fw-bold px-3 py-2 rounded-pill 6shadow-sm" style="font-size: 0.75rem;">Aktif</span>
-                                                @elseif($peminjaman->status == 'Dikembalikan Sebagian')
-                                                    <span class="badge bg-warning text-white fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">Dikembalikan Sebagian</span>
-                                                @elseif($peminjaman->status == 'Telah Dikembalikan')
-                                                    <span class="badge bg-success text-white fw-bold px-3 py-2 rounded-pill shadow-sm" style="font-size: 0.75rem;">Telah Dikembalikan</span>
-                                                @else
-                                                    <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-pill 6shadow-sm" style="font-size: 0.75rem;">Terlambat</span>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <span class="text-muted d-block mb-1" style="font-size: 0.9rem;">Denda</span>
-                                                
-                                                @if($peminjaman->denda->jumlahDenda > 0)
-                                                    <h6 class="text-danger fw-bold m-0">Rp. {{ number_format($peminjaman->denda->jumlahDenda, 0, ',', '.') }}</h6>
-                                                @else
-                                                    <h4 class="text-success fw-bold m-0">Rp. 0</h4>
-                                                @endif
-                                            </div>
-                                        </div>
-
                                         <hr>
 
                                         <div class="d-flex justify-content-end gap-2">

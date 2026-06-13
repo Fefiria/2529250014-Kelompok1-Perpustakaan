@@ -25,13 +25,13 @@
         <div class="sidebar-menu flex-grow-1">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                <li class="sidebar-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+                <li class="sidebar-item active">
                     <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.buku.*') ? 'active' : '' }}">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link'>
                         <i class="bi bi-journal-bookmark"></i>
                         <span>Buku</span>
@@ -45,7 +45,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.genre.*') ? 'active' : '' }}">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link'>
                         <i class="bi bi-box-seam"></i>
                         <span>Genre</span>
@@ -59,7 +59,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.peminjaman.*') ? 'active' : '' }}">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link'>
                         <i class="bi bi-bag"></i>
                         <span>Peminjaman</span>
@@ -73,7 +73,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item has-sub {{ Route::is('admin.user.*') ? 'active' : '' }}">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link'>
                         <i class="bi bi-people-fill"></i>
                         <span>User</span>

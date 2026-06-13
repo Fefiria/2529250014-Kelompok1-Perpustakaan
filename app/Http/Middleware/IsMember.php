@@ -19,7 +19,5 @@ class IsMember
         if(Auth::check() && Auth::user()->role === 'member'){
             return $next($request);
         }
-
-        return redirect()->route('admin.dashboard');
     }
 }
