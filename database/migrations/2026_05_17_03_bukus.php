@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('stok');
             $table->string('status');
             $table->text('ringkasan');
-            $table->timestamps()->nullable();
+            $table->timestamps();
         });
     }
 
