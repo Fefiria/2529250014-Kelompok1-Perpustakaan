@@ -4,7 +4,7 @@
 
 - [Felicia Yeow - 2529250014](https://github.com/Fefiria)
 - [Fernando Briliant - 2529250018](https://github.com/fernandobriliant6969)
-- M. Wanhar - 2529250056
+- [M. Wanhar - 2529250056](https://github.com/Neeecc)
 - [Achmad Hafista - 2529250027](https://github.com/achmadhafistasetyanto2529250027-a11y)
 - Louis Vito - 2529250017
 
