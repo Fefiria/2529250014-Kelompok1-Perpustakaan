@@ -27,12 +27,14 @@ class ReviewBukuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $idBuku)
+    public function store(Request $request)
     {
         $request->validate([
             'rating' => 'required|numeric|min:1|max:5',
             'pesan' => ''
         ]);
+
+        $idBuku = $request['idBuku'];
 
         $idUser = Auth::id();
         $buku = Buku::findOrFail($idBuku);
@@ -44,7 +46,11 @@ class ReviewBukuController extends Controller
             'pesan'  => $request->pesan
         ]);
 
-        return redirect()->route('member.listbuku')->with('success','Terimakasih sudah memberikan review. Reviewmu akan sangat berati untuk pepustakaan kami');
+        if(Auth::user()->role == 'member'){
+            return redirect()->route('member.listbuku')->with('success','Terimakasih sudah memberikan review. Reviewmu akan sangat berati untuk pepustakaan kami');
+        } else {
+            return redirect()->route('admin.buku.listbuku')->with('success','Terimakasih sudah memberikan review. Reviewmu akan sangat berati untuk pepustakaan kami');
+        }
     }
 
     /**
@@ -68,7 +74,23 @@ class ReviewBukuController extends Controller
      */
     public function update(Request $request, $idReview)
     {
-        //
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5',
+            'pesan' => ''
+        ]);
+
+        $review = ReviewBuku::findOrFail($idReview);
+
+        $review->update([
+            'rating' => $request->rating,
+            'pesan'  => $request->pesan
+        ]);
+
+        if(Auth::user()->role == 'member'){
+            return redirect()->route('member.listbuku')->with('success','Review berhasil diupdate');
+        } else {
+            return redirect()->route('admin.buku.listbuku')->with('success','Review berhasil diupdate');
+        }
     }
 
     /**
@@ -80,6 +102,10 @@ class ReviewBukuController extends Controller
 
         $review->delete();
 
-        return redirect()->route('member.listbuku')->with('success','Berhasil menghapus rating');
+        if(Auth::user()->role == 'member'){
+            return redirect()->route('member.listbuku')->with('success','Berhasil menghapus rating');
+        } else {
+            return redirect()->route('admin.buku.listbuku')->with('success','Berhasil menghapus rating');
+        }
     }
 }

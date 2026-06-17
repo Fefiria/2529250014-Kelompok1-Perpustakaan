@@ -56,21 +56,9 @@ class UserController extends Controller
     {
         $request->validate([
             "nama" => "required",
-            "username" => "required|unique:users",
-            "email" => "required|email|unique:users",
-            "nomorTelp" => "required",
-            "jenisKelamin" => "required",
-            "alamat" => "required",
-            "password" => ["required", Rules\Password::defaults()],
+            "password" => ["required", Rules\Password::defaults()]
         ],[
             "nama.required" => "Nama harus di isi",
-            "username.required" => "Username harus di isi",
-            "username.unique" => "Username ini sudah digunakan, Gunakan username lain",
-            "email.required" => "Email harus di isi",
-            "email.unique" => "Email ini sudah digunakan, Gunakan email lain",
-            "nomorTelp.required" => "Nomor telepon harus di isi",
-            "jenisKelamin.required" => "Jenis kelamin harus di isi",
-            "alamat.required" => "Alamat harus di isi",
             "password.required" => "Password harus di isi",
             "password.min" => "Minimal panjang password 8 karakter"
         ]);
@@ -214,5 +202,25 @@ class UserController extends Controller
         $user->update(['role' => 'admin']);
 
         return redirect()->route('admin.user.index')->with('success','Berhasil mengupdate role user menjadi admin');
+    }
+
+    /**
+     * Method untuk membuat user menjadi member
+     */
+    public function makeMember($idUser)
+    {
+        $user = User::findOrFail($idUser);
+
+        if(Auth::id() == $idUser){
+            return redirect()->route('admin.user.index')->with('failed','Gagal mengupdate user menjadi admin');
+        }
+
+        if($user->role == 'member'){
+            return redirect()->route('admin.user.index')->with('failed','User sudah menjadi member');
+        }
+
+        $user->update(['role' => 'member']);
+
+        return redirect()->route('admin.user.index')->with('success','Berhasil mengupdate role user menjadi member');
     }
 }

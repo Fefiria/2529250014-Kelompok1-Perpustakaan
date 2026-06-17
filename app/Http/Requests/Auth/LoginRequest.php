@@ -42,8 +42,8 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        if(!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey(), 300);
 
             throw ValidationException::withMessages([
                 'email' => 'Email atau password yang dimasukkan tidak valid',
@@ -82,10 +82,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => 'Terlalu banyak percobaan gagal! Harap tunggu ' . ceil($seconds / 60) . ' menit dan ' . ceil($seconds % 60) . ' detik untuk coba lagi'
         ]);
     }
 

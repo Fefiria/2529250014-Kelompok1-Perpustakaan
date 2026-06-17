@@ -10,25 +10,8 @@
     <link rel="stylesheet" href="{{ asset('assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/compiled/css/iconly.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/sidebar.css') }}">
     @stack('styles')
-    <style>
-/* 🎯 TARGETING KHUSUS UNTUK LAYAR GADGET (HP / TABLET) */
-@media (max-width: 1199.98px) {
-    
-    /* 1. Paksa wrapper pake dvh biar dinamis ngikutin Address Bar HP */
-    .sidebar-wrapper {
-        height: 100dvh !important;       /* 🟢 Jimat anti-kelelep di HP asli */
-        max-height: 100dvh !important;   /* 🟢 Jimat anti-kelelep di HP asli */
-    }
-
-    /* 2. Sesuaikan potongan menu tengahnya */
-    .sidebar-menu {
-        overflow-y: auto !important;
-        max-height: calc(100dvh - 180px) !important; /* Menggunakan dvh juga */
-        scrollbar-width: thin;
-    }
-}
-</style>
 </head>
 
 <body>
@@ -98,6 +81,17 @@
                 <h3 class="d-none d-lg-block">@yield('current-page')</h3>
             </div>
             @yield('content')
+
+            <footer>
+                <div class="footer clearfix mt-3 text-muted">
+                    <div class="float-lg-start text-center">
+                        <p>2026 &copy; Bookworm Library</p>
+                    </div>
+                    <div class="float-lg-end text-center">
+                        <p>Created by <a href="https://github.com/Fefiria/2529250014-Kelompok1-Perpustakaan">Kelompok 1</a></p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
@@ -105,7 +99,9 @@
     <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
     <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
+    <script src="{{ asset('assets/compiled/js/loadingAnimation.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     @stack('scripts')
 
     @if(session('success'))

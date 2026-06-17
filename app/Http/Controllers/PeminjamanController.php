@@ -15,9 +15,35 @@ class PeminjamanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $peminjamans = Peminjaman::with(['user', 'details.buku'])->get();        
+        $query = Peminjaman::with('user', 'details.buku');
+
+        // Mencari Peminjaman berdasarkan Nama Member atau Judul Buku
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+
+            $q->where(function ($sub) use ($search) {
+                $sub->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('nama', 'like', '%' . $search . '%'); // Sesuaikan nama kolom di tabel user lu
+                })->orWhereHas('details.buku', function ($bukuQuery) use ($search) {
+                    $bukuQuery->where('judul', 'like', '%' . $search . '%');
+                });
+            });
+        });
+
+        // Filter by  Status Peminjaman
+        $query->when($request->filled('status'), function ($q) use ($request) {
+            $status = $request->status;
+
+            $q->where(function ($sub) use ($status) {
+                $sub->where('status', '=', $status);
+            });
+        });
+
+        // Menampilkan hasil filter
+        $peminjamans = $query->paginate(10)->appends($request->all());        
+        
         return view('admin.peminjaman.index', compact('peminjamans'));
     }
 

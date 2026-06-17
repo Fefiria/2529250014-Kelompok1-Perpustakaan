@@ -29,13 +29,10 @@ class MemberController extends Controller
 
         $isTerlambat = false;
 
-        $peminjaman = Peminjaman::where('idUser', Auth::id())
-            ->where('status', '!=', 'Telah Dikembalikan')
-            ->with(['details'])
-            ->get();
+        $peminjamanBelumKembali = Peminjaman::where('idUser', Auth::id())->where('status', '!=', 'Telah Dikembalikan')->with(['details'])->get();
 
-        if ($peminjaman->isNotEmpty()) {
-            foreach ($peminjaman as $pinjam) {
+        if($peminjamanBelumKembali->isNotEmpty()) {
+            foreach ($peminjamanBelumKembali as $pinjam) {
                 
                 $tanggalBatas = Carbon::parse($pinjam->tanggalKembali)->startOfDay();
                 
@@ -56,6 +53,15 @@ class MemberController extends Controller
                         } 
                         $totalBukuBelumDikembalikan++;
                     }
+                }
+            }
+        }
+
+        $peminjaman = Peminjaman::where('idUser', Auth::id())->with(['details'])->get();
+
+        if($peminjaman->isNotEmpty()){
+            foreach($peminjaman as $pinjam){
+                foreach($pinjam->details as $detail){
                     $totalBukuPeminjaman++;
                 }
             }
@@ -63,16 +69,11 @@ class MemberController extends Controller
 
         $peminjamanHarian = collect();
     
-        // 🎯 LOOPING 30 HARI KE BELAKANG
-        for ($i = 29; $i >= 0; $i--) {
+        for($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
-            $labelDate = now()->subDays($i)->format('d M'); // Format rapi buat di Chart (Contoh: 12 Jun)
+            $labelDate = now()->subDays($i)->format('d M');
 
-            // Hitung total buku yang dipinjam member ini di tanggal tersebut
-            $count = Peminjaman::where('idUser', Auth::id())
-                ->whereDate('tanggalPeminjaman', $date)
-                ->join('detail_peminjamans', 'peminjamans.idPeminjaman', '=', 'detail_peminjamans.idPeminjaman')
-                ->count();
+            $count = Peminjaman::where('idUser', Auth::id())->whereDate('tanggalPeminjaman', $date)->join('detail_peminjamans', 'peminjamans.idPeminjaman', '=', 'detail_peminjamans.idPeminjaman')->count();
 
             $peminjamanHarian->push([
                 'tanggal' => $labelDate,
@@ -86,9 +87,7 @@ class MemberController extends Controller
             return $pinjam->details->flatMap(function ($detail) {
                 return $detail->buku->genre; 
             });
-        })
-        ->groupBy('idGenre')
-        ->map(function ($group) {
+        })->groupBy('idGenre')->map(function ($group) {
             return [
                 'nama' => $group->first()->nama,
                 'total' => $group->count()
@@ -101,21 +100,11 @@ class MemberController extends Controller
         $chartLabels = $peminjamanHarian->pluck('tanggal')->toArray();
         $chartData = $peminjamanHarian->pluck('total')->toArray();
 
-        $bukuPopuler = Buku::withCount('detailPeminjamans') // Otomatis menghitung agregat jumlah baris di tabel detail
-        ->orderBy('detail_peminjamans_count', 'desc') // Diurutkan dari yang hitungan count-nya paling tinggi
-        ->take(5)
-        ->get();
-    // 🎯 TABEL 2: Top 5 Buku dengan Rata-rata Ulasan/Rating Tertinggi
-        $bukuRatingTertinggi = Buku::withAvg('review as rating_avg', 'review_bukus.rating')
-            ->withCount('review as review_count') 
-            ->orderBy('rating_avg', 'desc') 
-            ->take(5)
-            ->get();
-        return view('dashboard', compact('totalBukuBelumDikembalikan', 'totalPeminjamanBelumKembali', 'totalBukuTerlambat', 'totalPeminjamanTerlambat', 'isTerlambat', 
-                'totalBukuPeminjaman',  'totalPeminjaman', 
-                'chartLabels', 'chartData',
-                'donutLabels', 'donutValues',
-                'bukuPopuler', 'bukuRatingTertinggi'));
+        $bukuPopuler = Buku::withCount('detailPeminjamans')->orderBy('detail_peminjamans_count', 'desc')->take(5)->get();
+
+        $bukuRatingTertinggi = Buku::withAvg('review as rating_avg', 'review_bukus.rating')->withCount('review as review_count') ->orderBy('rating_avg', 'desc')->take(5)->get();
+
+        return view('member.dashboard', compact('totalBukuBelumDikembalikan', 'totalBukuTerlambat', 'totalPeminjamanTerlambat', 'isTerlambat', 'totalBukuPeminjaman',  'totalPeminjaman', 'chartLabels', 'chartData','donutLabels', 'donutValues','bukuPopuler', 'bukuRatingTertinggi'));
     }
 
     public function listbuku(Request $request)
@@ -152,13 +141,16 @@ class MemberController extends Controller
         // Mengambil semua genre
         $genres = Genre::all();
 
-        return view('listbuku', compact('bukus', 'genres'));
+        // List buku yang pernah dipinjam user dan kirim ke listbuku untuk filter buku yang hanya boleh di review kalau sudah pernah pinjam buku tersebut
+        $bukuPernahDipinjam = Peminjaman::where('idUser', Auth::id())->join('detail_peminjamans', 'peminjamans.idPeminjaman', '=', 'detail_peminjamans.idPeminjaman')->pluck('detail_peminjamans.idBuku')->unique()->toArray();
+
+        return view('member.listbuku', compact('bukus', 'genres', 'bukuPernahDipinjam'));
     }
 
     public function riwayatpeminjaman()
     {
         $peminjaman = Peminjaman::where('idUser', Auth::id())->paginate(10);
 
-        return view('riwayatpeminjaman', compact('peminjaman'));
+        return view('member.riwayatpeminjaman', compact('peminjaman'));
     }
 }

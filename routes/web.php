@@ -31,21 +31,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/security/password/{idUser}', [SecurityController::class, 'updatePassword'])->name('profile.security.updatePassword');
     Route::put('/profile/security/email/{idUser}', [SecurityController::class, 'updateEmail'])->name('profile.security.updateEmail');
     Route::delete('/profile/security/{idUser}', [SecurityController::class, 'deleteAccount'])->name('profile.security.deleteAccount');
+
+    // Review Controller
+    Route::resource('review', ReviewBukuController::class);
 });
 
 // Route khusus Member
-Route::middleware('auth', IsMember::class)->group(function () {
-    Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
+Route::middleware('auth', IsMember::class)->prefix('member')->group(function () {
+    Route::get('dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
 
-    Route::get('/listbuku', [MemberController::class, 'listbuku'])->name('member.listbuku');
+    Route::get('listbuku', [MemberController::class, 'listbuku'])->name('member.listbuku');
 
-    Route::get('/riwayatpeminjaman', [MemberController::class, 'riwayatpeminjaman'])->name('member.riwayatpeminjaman');
-
-    Route::post('/member/review/store/{idBuku}', [ReviewBukuController::class, 'store'])->name('member.review.store');
-    
-    Route::put('/member/review/update/{idReview}', [ReviewBukuController::class, 'update'])->name('member.review.update');
-    
-    Route::delete('/member/review/delete/{idReview}', [ReviewBukuController::class, 'destroy'])->name('member.review.destroy');
+    Route::get('riwayatpeminjaman', [MemberController::class, 'riwayatpeminjaman'])->name('member.riwayatpeminjaman');
 });
 
 // Route khusus Admin / Superadmin
@@ -61,6 +58,7 @@ Route::middleware(['auth', IsAdmin::class])->prefix('admin')->name('admin.')->gr
     Route::resource('genre', GenreController::class);
 
     // Buku Controller
+    Route::get('buku/list', [BukuController::class, 'listbuku'])->name('buku.listbuku');
     Route::resource('buku', BukuController::class);
 
     // Dashboard
@@ -69,7 +67,7 @@ Route::middleware(['auth', IsAdmin::class])->prefix('admin')->name('admin.')->gr
     // User Controller
     Route::resource('user', UserController::class);
     Route::post('user/makeadmin/{idUser}', [UserController::class, 'makeAdmin'])->name('user.makeAdmin');
-    Route::post('user/makemember/{idUser}', [UserController::class, 'makeMember'])->name('user.makeAdmin');
+    Route::post('user/makemember/{idUser}', [UserController::class, 'makeMember'])->name('user.makeMember');
 });
 
 require __DIR__ . '/auth.php';

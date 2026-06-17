@@ -1,36 +1,19 @@
 @if ($paginator->hasPages())
     <nav class="d-flex align-items-center justify-content-between w-100 mt-4" style="width: 100% !important;">
-        
-        <div class="d-flex justify-content-between flex-fill d-sm-none">
-            <ul class="pagination mb-0">
-                @if ($paginator->onFirstPage())
-                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">@lang('pagination.previous')</span></li>
-                @else
-                    <li class="page-item"><a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">@lang('pagination.previous')</a></li>
-                @endif
-
-                @if ($paginator->hasMorePages())
-                    <li class="page-item"><a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">@lang('pagination.next')</a></li>
-                @else
-                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">@lang('pagination.next')</span></li>
-                @endif
-            </ul>
-        </div>
-
-        <div class="d-none d-sm-flex align-items-center justify-content-between w-100">
+        <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 w-100">
             
-            <div class="small text-muted mb-0">
-                {!! __('Menampilkan') !!}
+            <div class="small text-center text-sm-start text-muted mb-0">
+                Menampilkan
                 <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                {!! __('sampai') !!}
+                sampai
                 <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                {!! __('dari') !!}
+                dari
                 <span class="fw-semibold">{{ $paginator->total() }}</span>
-                {!! __('hasil') !!}
+                hasil
             </div>
 
             <div>
-                <ul class="pagination mb-0">
+                <ul class="pagination mb-0 justify-content-center">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
                         <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">

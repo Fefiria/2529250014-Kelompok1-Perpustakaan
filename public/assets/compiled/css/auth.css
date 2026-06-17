@@ -7,6 +7,12 @@ body{
     overflow-x:hidden
 }
 
+#auth {
+    overflow: hidden;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important;  /* IE and Edge */
+}
+
 .auth-logo {
     height: 175px;
     width: 150px;
@@ -18,8 +24,6 @@ body{
     height: 100%;
 }
 
-
-
 #auth #auth-right{
     height:100%;
     background:url(../jpg/bg-login.jpg);
@@ -28,26 +32,21 @@ body{
 }
 
 #auth #auth-left{
-    padding:5rem
+    padding:3rem
 }
 
-#auth #auth-left .auth-title{
-    font-size:4rem;
-    margin-bottom:1rem
+#auth .auth-title{
+    font-size:2.5rem;
+    margin-top:2rem;
+    margin-bottom:2rem;
 }
 
-#auth #auth-left .auth-subtitle{
-    font-size:1.7rem;
-    line-height:2.5rem;
-    color:#a8aebb
+#auth {
+    background-color: #111e2f;
 }
 
-#auth #auth-left {
-    margin-bottom:7rem
-}
-
-#auth #auth-left {
-    height:2rem
+#auth button {
+    background-color: #435ebe;
 }
 
 @media screen and (max-width: 1399.9px){
@@ -66,6 +65,7 @@ body{
     #auth #auth-left{
         padding:5rem 3rem
     }
+    
 }
 
 html[data-bs-theme=dark] #auth-right{

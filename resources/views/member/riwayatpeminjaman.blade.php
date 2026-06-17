@@ -23,10 +23,10 @@
                                         <thead class="table border-bottom border-secondary-subtle">
                                             <tr>
                                                 <th style="width: 5%" class="py-3 text-center">NO</th>
-                                                <th style="width: 30%" class="py-3">BUKU YANG DIPINJAM</th>
+                                                <th style="width: 55%" class="py-3">BUKU YANG DIPINJAM</th>
                                                 <th style="width: 20%" class="py-3">PERIODE PINJAM</th>
-                                                <th style="width: 20%" class="py-3 text-center">DENDA</th>
-                                                <th style="width: 20%" class="py-3 text-center">STATUS</th>
+                                                <th style="width: 10%" class="py-3 text-center">DENDA</th>
+                                                <th style="width: 10%" class="py-3 text-center">STATUS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,8 +100,24 @@
                                     </table>
                                 </div>
 
-                                <div class="mt-5">
-                                    {{ $peminjaman->links('pagination::bootstrap-5') }}
+                                <div class="d-flex justify-content-center align-items-center mt-3">
+                                    @if($peminjaman->total() <= 10)
+                                        <nav class="d-flex align-items-center justify-content-between w-100 mt-4" style="width: 100% !important;">
+                                            <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 w-100">
+                                                <div class="small text-center text-sm-start text-muted mb-0">
+                                                    Menampilkan
+                                                    <span class="fw-semibold">{{ $peminjaman->firstItem() }}</span>
+                                                    sampai
+                                                    <span class="fw-semibold">{{ $peminjaman->lastItem() }}</span>
+                                                    dari
+                                                    <span class="fw-semibold">{{ $peminjaman->total() }}</span>
+                                                    hasil
+                                                </div>
+                                            </div>
+                                        </nav>
+                                    @else
+                                        {{ $peminjaman->links('pagination::bootstrap-5') }}
+                                    @endif
                                 </div>
                             </div>
                         @endif

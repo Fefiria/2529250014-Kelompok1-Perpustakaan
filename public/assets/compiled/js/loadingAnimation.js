@@ -1,12 +1,15 @@
-function tampilLoadingAnimation(){
-    const buttonLogin = document.getElementById('btn-login');
-    const textLogin = document.getElementById('text-login');
-    const animasi = document.getElementById('spinner-login');
-    const textLoading = document.getElementById('text-loading');
+function tampilLoadingAnimation(form) {
+    const button = form.querySelector('button[type="submit"]');
     
-    buttonLogin.disabled = true;
-    textLogin.classList.add('d-none');
-
-    animasi.classList.remove('d-none');
-    textLoading.classList.remove('d-none');
-}
+    if(button){
+        const textButton = button.querySelector('#text-button');
+        const animasi = button.querySelector('#spinner-loading');
+        const textLoading = button.querySelector('#text-loading');
+        
+        button.disabled = true;
+        if(textButton) textButton.classList.add('d-none');
+        if(animasi) animasi.classList.remove('d-none');
+        if(textLoading) textLoading.classList.remove('d-none');
+        
+    }
+}   

@@ -1,172 +1,148 @@
 @extends('admin.layouts.main')
 
+@section('current-page','Dashboard Perpustakaan')
+
 @section('content')
-    <div class="page-heading">
-        <h3>Dashboard Perpustakaan</h3>
-    </div>
-
-    <div class="page-content">
-        <div class="row">
-            <div class="row">
-
-                {{-- Jumlah Buku --}}
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-
-                                <div class="stats-icon purple me-3">
-                                    <i class="iconly-boldShow"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="text-muted mb-1">Jumlah Buku</h6>
-                                    <h6 class="font-extrabold mb-0">{{ $jumlahBuku }}</h6>
-                                </div>
-
-                            </div>
+    <div class="row g-2">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon purple me-3">
+                            <i class="bi bi-star-fill text-white d-inline-flex align-items-center me-2"></i>
                         </div>
-                    </div>
-                </div>
 
-                {{-- Jumlah Anggota --}}
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-
-                                <div class="stats-icon blue me-3">
-                                    <i class="iconly-boldProfile"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="text-muted mb-1">Jumlah Anggota</h6>
-                                    <h6 class="font-extrabold mb-0">{{ $jumlahAnggota }}</h6>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Jumlah Peminjaman --}}
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-
-                                <div class="stats-icon blue me-3">
-                                    <i class="iconly-boldProfile"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="text-muted mb-1">Jumlah Peminjaman</h6>
-                                    <h6 class="font-extrabold mb-0">{{ $jumlahPeminjaman }}</h6>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Jumlah Pengembalian --}}
-                <div class="col-6 col-lg-3 col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-
-                                <div class="stats-icon blue me-3">
-                                    <i class="iconly-boldProfile"></i>
-                                </div>
-
-                                <div>
-                                    <h6 class="text-muted mb-1">Jumlah Dikembalikan</h6>
-                                    <h6 class="font-extrabold mb-0">000</h6>
-                                </div>
-
-                            </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Jumlah Review</h6>
+                            <h6 class="font-extrabold mb-0">{{ $jumlahRating }}</h6>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {{-- Grafik Bar --}}
-            <div class="row">
-                <div class="col-12 col-lg-6 col-md-6">
-                    <div class="card p-3" style="height: 520px !important;">
-                        <div class="card-header text-center">
-                            <h4>Statistik Perpustakaan</h4>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon blue me-3">
+                            <i class="bi bi-clipboard-data-fill text-white d-inline-flex align-items-center me-2"></i>
                         </div>
-                        <div class="card-body d-flex align-items-center justify-content-center" style="height: calc(100% - 60px);">
-                            <!-- 🚀 PERBAIKAN CANVAS: Set height HTML-nya ke 100% biar dia melar penuh ke bawah -->
-                            <canvas id="mainDashboardChart" style="width: 100% !important; height: 100% !important; max-height: 400px;"></canvas>
+
+                        <div>
+                            <h6 class="text-muted mb-1">Jumlah Peminjaman</h6>
+                            <h6 class="font-extrabold mb-0">{{ $jumlahPeminjaman }}</h6>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-12 col-lg-6 col-md-6">
-                    <div class="card" style="height: 520px !important; overflow: hidden;">
-                        <div class="card-header text-center mb-0">
-                            <h4>Top 5 Buku Populer Sering Dipinjam</h4>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon green me-3">
+                            <i class="bi bi-arrow-repeat text-white d-inline-flex align-items-center me-2"></i>
                         </div>
-                        <div class="card-body" style="overflow-y: auto; height: calc(100% - 60px);">
-                            <div class="table-responsive">
-                                <table class="table table-lg align-middle text-white">
-                                    <thead>
-                                        <tr class="text-muted" style="border-bottom: 2px solid #4f5d73;">
-                                            <th style="width: 10%" class="text-center">RANK</th>
-                                            <th style="width: 70%">JUDUL BUKU</th>
-                                            <th style="width: 20%" class="text-center">TOTAL DIPINJAM</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- Kita pakai @foreach biasa, tapi manfaatin $loop->iteration buat nomor urut --}}
-                                        @forelse($labelBukuPopuler as $index => $judul)
-                                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
-                                                
-                                                <td class="text-center fw-bold fs-5">
-                                                    @if($loop->iteration == 1)
-                                                        <span data-bs-toggle="tooltip" title="Juara 1 Bestseller">🥇</span>
-                                                    @elseif($loop->iteration == 2)
-                                                        <span data-bs-toggle="tooltip" title="Juara 2 Bestseller">🥈</span>
-                                                    @elseif($loop->iteration == 3)
-                                                        <span data-bs-toggle="tooltip" title="Juara 3 Bestseller">🥉</span>
-                                                    @else
-                                                        <span class="text-muted fs-6" style="padding-left: 6px;">{{ $loop->iteration }}</span>
-                                                    @endif
-                                                </td>
 
-                                                <td class="fw-semibold text-wrap">
-                                                    @if($loop->iteration == 1)
-                                                        <span class="text-warning">{{ $judul }}</span>
-                                                    @elseif($loop->iteration == 2)
-                                                        <span class="text-secondary">{{ $judul }}</span>
-                                                    @elseif($loop->iteration == 3)
-                                                        <span style="color: #CD7F32;">{{ $judul }}</span>
-                                                    @else
-                                                        <span>{{ $judul }}</span>
-                                                    @endif
-                                                </td>
-
-                                                <td class="text-center">
-                                                    <span class="badge bg-light-primary text-primary fw-bold px-3 py-2" style="font-size: 0.9rem;">
-                                                        {{ $jumlahBukuPopuler[$index] }} Kali
-                                                    </span>
-                                                </td>
-
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="3" class="text-center text-muted py-4">
-                                                    <i class="bi bi-book-half d-block mb-2" style="font-size: 2rem;"></i>
-                                                    Belum ada data  peminjaman.
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div>
+                            <h6 class="text-muted mb-1">Jumlah Peminjaman Dikembalikan</h6>
+                            <h6 class="font-extrabold mb-0">{{ $jumlahDikembalikan }}</h6>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h4>Statistik Perpustakaan</h4>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <div style="position: relative; height: 400px; width: 100%;">
+                        <canvas id="mainDashboardChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h4>Aktivitas Peminjaman - 30 Hari Terakhir</h4>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <div style="position: relative; height: 400px; width: 100%;">
+                        <canvas id="aktivitasPeminjamanChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h4 class="card-title"><i class="bi bi-fire text-danger me-2 mb-1"></i>Top 5 Buku Terpopuler</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 custom-dash-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%" class="text-center">RANK</th>
+                                    <th style="width: 85%">BUKU</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($bukuPopuler as $index => $buku)
+                                    <tr class="border-bottom border-light-subtle">
+                                        <td class="text-center fw-bold">
+                                            @if($index == 0)
+                                                <span class="fs-4">🏆</span>
+                                            @elseif($index == 1)
+                                                <span class="fs-4">🥈</span>
+                                            @elseif($index == 2)
+                                                <span class="fs-4">🥉</span>
+                                            @else
+                                                <span class="text-secondary ms-1" style="font-size: 0.9rem;">#{{ $index + 1 }}</span>
+                                            @endif
+                                        </td>
+                                        <td> 
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" 
+                                                    alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" 
+                                                    style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
+                                                <div class="flex-grow-1">
+                                                    <div class="fw-semibold text-dark-theme-white dash-book-title" title="{{ $buku->judul }}">
+                                                        {{ $buku->judul }}
+                                                    </div>
+                                                    <small class="text-muted d-block" style="font-size: 0.72rem;">Dipinjam {{ $buku->detail_peminjamans_count }} kali</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <h4>Status Ketersediaan Stok Buku</h4>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <div style="position: relative; height: 400px; width: 100%;">
+                        <canvas id="statusKetersediaanStokBukuChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -176,9 +152,9 @@
 
 @push('scripts')
     <script>
-        const ctx = document.getElementById('mainDashboardChart').getContext('2d');
+        const ctx1 = document.getElementById('mainDashboardChart').getContext('2d');
             
-        new Chart(ctx, {
+        new Chart(ctx1, {
             type: 'bar',
             data: {
                 labels: ['Total Anggota', 'Total Genre', 'Total Buku', 'Total Peminjaman'],
@@ -232,5 +208,97 @@
                 }
             }
         });
+
+        const labelTanggal = {!! json_encode($chartLabelTotalPeminjaman) !!};
+        const dataTotal = {!! json_encode($chartDataTotalPeminjaman) !!};
+
+        const ctx2 = document.getElementById('aktivitasPeminjamanChart').getContext('2d');
+
+        const gradient = ctx2.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(67, 94, 190, 0.35)');
+        gradient.addColorStop(1, 'rgba(67, 94, 190, 0.01)');
+
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labelTanggal,
+                datasets: [{
+                    label: 'Total Peminjaman',
+                    data: dataTotal,
+                    borderColor: '#435ebe',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: gradient,
+                    pointBackgroundColor: '#435ebe',
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false } 
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#6c757d', font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(108, 117, 125, 0.1)' },
+                        ticks: { 
+                            color: '#6c757d',
+                            stepSize: 1,
+                            beginAtZero: true 
+                        }
+                    }
+                }
+            }
+        });
+
+        const labelsPie = {!! json_encode($pieLabels) !!};
+            const dataPie = {!! json_encode($pieValues) !!};
+
+            const ctxPie3 = document.getElementById('statusKetersediaanStokBukuChart').getContext('2d');
+
+            new Chart(ctxPie3, {
+                type: 'pie',
+                data: {
+                    labels: labelsPie,
+                    datasets: [{
+                        data: dataPie,
+                        backgroundColor: ['#198754', '#435ebe', '#dc3545'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#6c757d',
+                                boxWidth: 12,
+                                font: { size: 12, family: 'Nunito, sans-serif' },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    let value = context.raw;
+                                    let percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${value} Eksemplar (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
     </script>
 @endpush

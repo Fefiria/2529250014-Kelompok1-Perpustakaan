@@ -55,14 +55,14 @@ class ProfileController extends Controller
         if ($request->is_avatar_deleted == '1') {
             if ($user->photoUrl) {
                 $publicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
-                $uploadApi->destroy($publicId);
+                $uploadApi->destroy('user/' . $publicId);
                 $input['photoUrl'] = null;
             }
         } elseif ($request->hasFile('avatar')) {
             
             if ($user->photoUrl) {
                 $oldPublicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
-                $uploadApi->destroy($oldPublicId);
+                $uploadApi->destroy('user/' . $oldPublicId);
             }
             
             $uploadResponse = $uploadApi->upload($request->file('avatar')->getRealPath(), [

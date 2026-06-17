@@ -118,7 +118,7 @@ class BukuController extends Controller
 
         Ketentuan:
         1. Langsung berikan isi ringkasannya saja dalam 4-6 kalimat tanpa kalimat basa-basi pembuka (seperti "Tentu, ini ringkasannya") atau penutup.
-        2. Jika lu benar-benar tidak tahu sama sekali tentang buku ini (judul asal ketik), cukup jawab: "Tidak ada informasi yang tersedia untuk buku ini."
+        2. Jika benar-benar tidak tahu sama sekali tentang buku ini (judul asal ketik), cukup jawab: "Tidak ada informasi yang tersedia untuk buku ini."
         EOT;
 
         try {
@@ -202,13 +202,9 @@ class BukuController extends Controller
      */
     public function edit($idBuku)
     {
-        try {
-            $buku = Buku::findOrFail($idBuku);
-            $genre = Genre::all();
-            return view('admin.buku.edit', compact('buku', 'genre'));
-        } catch (ModelNotFoundException $e) {
-            abort(404);
-        }
+        $buku = Buku::findOrFail($idBuku);
+        $genre = Genre::all();
+        return view('admin.buku.edit', compact('buku', 'genre'));
     }
 
     /**
@@ -259,10 +255,17 @@ class BukuController extends Controller
             'stok' => $input['stok']
         ];
 
+        // Memanggil cloudinary
+        Configuration::instance();
+        $uploadApi = new UploadApi();
         // 1. Jika user upload foto cover buku baru
         if ($request->hasFile('photoUrl')) {
-            Configuration::instance();
-            $update = (new UploadApi())->upload($request->file('photoUrl')->getRealPath(), [
+            // Hapus cover buku lama
+            $oldPublicId = pathinfo($buku->photoUrl, PATHINFO_FILENAME);
+            $uploadApi->destroy('buku/' . $oldPublicId);
+
+            // Upload cover buku baru
+            $update = $uploadApi->upload($request->file('photoUrl')->getRealPath(), [
                 'folder' => 'buku'
             ]);
             $dataUpdate['photoUrl'] = $update['secure_url'];
@@ -272,6 +275,9 @@ class BukuController extends Controller
         // 3. Jika user menghapus cover buku dan tidak menambahkan cover baru
         } else { //
             $dataUpdate['photoUrl'] = null;
+
+            $oldPublicId = pathinfo($buku->photoUrl, PATHINFO_FILENAME);
+            $uploadApi->destroy('buku/' . $oldPublicId);
         }
 
         // Mengupdate data buku
@@ -296,6 +302,43 @@ class BukuController extends Controller
         $buku->delete();
 
         return redirect()->route('admin.buku.index')->with('success','Berhasil menghapus buku ' . $namaBuku);
+    }
+
+    public function listbuku(Request $request)
+    {
+        $query = Buku::with([
+            'genre', 
+            'review' => function($query) {
+                $query->latest();
+            }
+        ])->withCount('review')->withAvg('review as rating_avg', 'review_bukus.rating');
+
+        // Mencari buku berdasarkan judul atau pengarang
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+            $q->where(function ($sub) use ($search) {
+                $sub->where('judul', 'like', '%' . $search . '%')->orWhere('pengarang', 'like', '%' . $search . '%');
+            });
+        });
+
+        // Filter by genre dan bisa banyak genre
+        $query->when($request->filled('idGenre') && is_array($request->idGenre), function ($q) use ($request) {
+            $selectedGenres = array_filter($request->idGenre); 
+
+            if (!empty($selectedGenres)) {
+                $q->whereHas('genre', function ($sub) use ($selectedGenres) {
+                    $sub->whereIn('genres.idGenre', $selectedGenres);
+                });
+            }
+        });
+
+        // Menampilkan hasil filter
+        $bukus = $query->paginate(24)->appends($request->all());
+        
+        // Mengambil semua genre
+        $genres = Genre::all();
+
+        return view('admin.buku.list', compact('bukus', 'genres'));
     }
 
 }

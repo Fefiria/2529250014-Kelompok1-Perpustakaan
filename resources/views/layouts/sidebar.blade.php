@@ -64,12 +64,23 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg" aria-labelledby="topbarUserDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('profile.security') }}">Settings</a></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.edit') }}">
+                                <i class="bi bi-person d-inline-flex align-items-center" ></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.security') }}">
+                                <i class="bi bi-gear d-inline-flex align-items-center"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                            <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="bi bi-box-arrow-right d-inline-flex align-items-center"></i>
                                 Logout
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
