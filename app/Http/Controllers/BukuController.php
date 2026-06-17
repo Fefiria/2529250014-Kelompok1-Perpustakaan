@@ -10,6 +10,7 @@ use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 use Gemini\Enums\ModelVariation;
 use Gemini\GeminiHelper;
@@ -254,6 +255,23 @@ class BukuController extends Controller
             'status' => $input['status'],
             'stok' => $input['stok']
         ];
+
+        DB::beginTransaction();
+
+        try {
+            if ($buku->judul !== $input['judul'] || $buku->pengarang !== $input{'pengarang'}) {
+                $prompt = "Berikan ringkasan atau sinopsis singkat dalam bahasa indonesia untuk buku berjudul '{$input['judul']}' karya '{$input['pengarang']}' . Langsung berikan isi ringkasannya aja tanpa basa basi.";
+
+                $response = http::withToken(env('GROO_API_KEY'))->post('https://api.groq.com/openai/v1/chat/completions', ['model' => 'llama-3.3-70b-versatile',
+                'messages' => [
+                    ['role' => 'user', 'content' => $prompt]],
+                ]);
+                if($response->successful()) {
+                    $restArray = $response->json();
+                    $dataUpdate['ringkasan'] = $restArray['choices'][0]['message']['content'] ?? $buku->ringkasan;
+                }
+            }
+        }
 
         // 1. Jika user upload foto cover buku baru
         if ($request->hasFile('photoUrl')) {
