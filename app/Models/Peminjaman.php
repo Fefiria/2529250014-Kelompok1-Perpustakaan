@@ -34,7 +34,6 @@ class Peminjaman extends Model
         return $this->hasMany(DetailPeminjaman::class, 'idPeminjaman', 'idPeminjaman');
     }
 
-    // Relasi antara peminjaman dan denda
     public function denda() {
         // Parameter 1: Foreign Key di tabel dendas
         // Parameter 2: Primary Key di tabel peminjamans

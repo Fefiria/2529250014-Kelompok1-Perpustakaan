@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\DetailPeminjaman;
 
 class Buku extends Model
 {
@@ -35,24 +33,5 @@ class Buku extends Model
         // Parameter 3: Foreign Key milik model ini di tabel pivot (idBuku)
         // Parameter 4: Foreign Key milik model target di tabel pivot (idGenre)
         return $this->belongsToMany(Genre::class, 'genre_bukus', 'idBuku', 'idGenre');
-    }
-
-    // Relasi antara review dan buku
-    public function review()
-    {
-        // Parameter 1: Model target (users)
-        // Parameter 2: Nama tabel pivot/penengah di database (review_bukus)
-        // Parameter 3: Foreign key milik model ini di tabel pivot (idBuku)
-        // Parameter 4: Foreign key milik model target di tabel pivot (idUser)
-        return $this->belongsToMany(User::class, 'review_bukus', 'idBuku', 'idUser')->withPivot('idReview','rating','pesan');
-    }
-
-    // Relasi antara buku dan detail pminjaman
-    public function detailPeminjamans()
-    {
-         // Parameter 1: Model target (detail_peminjamans)
-        // Parameter 3: Foreign key milik model ini di tabel pivot (idBuku)
-        // Parameter 4: Foreign key milik model target di tabel pivot (idBuku)
-        return $this->hasMany(DetailPeminjaman::class, 'idBuku', 'idBuku'); 
     }
 }
