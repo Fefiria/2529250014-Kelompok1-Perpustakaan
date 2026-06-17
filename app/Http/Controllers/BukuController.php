@@ -109,7 +109,7 @@ class BukuController extends Controller
         ]);
 
 
-        // Ambil judul buku dinamis dari database lu
+        // Ambil judul buku dari input
         $judul = $input['judul'];
         $pengarang = $input['pengarang']; 
 
@@ -239,6 +239,42 @@ class BukuController extends Controller
             'stok.min' => 'Minimal stok tidak boleh kurang dari 0'
         ]);
 
+        if((strtolower($buku->judul) != strtolower($input['judul'])) && (strtolower($buku->pengarang) != strtolower($input['pengarang']))){
+            // Ambil judul buku dari input
+            $judul = $input['judul'];
+            $pengarang = $input['pengarang']; 
+
+            $prompt = <<<EOT
+            Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul "$judul" karya "$pengarang". 
+
+            Ketentuan:
+            1. Langsung berikan isi ringkasannya saja dalam 4-6 kalimat tanpa kalimat basa-basi pembuka (seperti "Tentu, ini ringkasannya") atau penutup.
+            2. Jika benar-benar tidak tahu sama sekali tentang buku ini (judul asal ketik), cukup jawab: "Tidak ada informasi yang tersedia untuk buku ini."
+            EOT;
+
+            try {
+                $response = Http::withToken(env('GROQ_API_KEY'))->post('https://api.groq.com/openai/v1/chat/completions', [
+                    'model' => 'llama-3.3-70b-versatile', 
+                    'messages' => [
+                        ['role' => 'user', 'content' => $prompt]
+                    ],
+                ]);
+
+                $resArray = $response->json();
+
+                if (isset($resArray['choices'][0]['message']['content'])) {
+                    $hasilSummary = $resArray['choices'][0]['message']['content'];
+                } else {
+                    $hasilSummary = null;
+                }
+                
+            } catch (\Exception $e) {
+                $hasilSummary = null;
+            }
+        } else {
+            $hasilSummary = $buku->ringkasan;
+        }
+
         // Jika stok buku 0, otomais set status buku menjadi tidak tersedia
         if($input['stok'] == 0){
             $input['status'] = 'tidak tersedia';
@@ -252,7 +288,8 @@ class BukuController extends Controller
             'tanggalTerbit' => $input['tanggalTerbit'],
             'jumlahHalaman' => $input['jumlahHalaman'],
             'status' => $input['status'],
-            'stok' => $input['stok']
+            'stok' => $input['stok'],
+            'ringkasan' => $hasilSummary
         ];
 
         // Memanggil cloudinary
