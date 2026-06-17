@@ -307,20 +307,6 @@ class BukuController extends Controller
 
         $namaBuku = $buku->judul;
 
-        if($buku->photoUrl) {
-            Configuration::instance();
-            $path = parse_url($buku->photoUrl, PHP_URL_PATH);
-            $pathSegments = explode('/', $path);
-
-            $fileWithExtension = end($pathSegments);
-            $fileName = pathinfo($filewithExtension, PATHINFO_FILENAME);
-            $publicId = 'buku/' . $fileName;
-            (new UploadApi())->destroy($publicId);
-        }
-        $buku->delete();
-        return redirect()->route('admin.buku.index')->with('success', 'Berhasil menghapus buku' . $namaBuku . ' beserta covernya.');
-        }
-
         $buku->delete();
 
         return redirect()->route('admin.buku.index')->with('success','Berhasil menghapus buku ' . $namaBuku);
