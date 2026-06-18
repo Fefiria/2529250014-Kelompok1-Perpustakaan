@@ -34,4 +34,11 @@ class Buku extends Model
         // Parameter 4: Foreign Key milik model target di tabel pivot (idGenre)
         return $this->belongsToMany(Genre::class, 'genre_bukus', 'idBuku', 'idGenre');
     }
+
+    public function detailPeminjamans()
+    {
+        // Parameter 1: Nama Model tujuan (DetailPeminjaman)
+        // Parameter 2: Nama kolom Foreign Key yang ada di tabel detail_peminjamans
+        return $this->hasMany(DetailPeminjaman::class, 'id_buku'); 
+    }
 }
