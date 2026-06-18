@@ -39,6 +39,7 @@ class Buku extends Model
     {
         // Parameter 1: Nama Model tujuan (DetailPeminjaman)
         // Parameter 2: Nama kolom Foreign Key yang ada di tabel detail_peminjamans
-        return $this->hasMany(DetailPeminjaman::class, 'id_buku'); 
+        return $this->hasMany(DetailPeminjaman::class, 'idBuku'); 
+        
     }
 }
